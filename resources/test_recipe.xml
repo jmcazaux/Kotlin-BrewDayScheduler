@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<RECIPES>
+  <RECIPE>
+    <NAME>Belgian Duppel #5</NAME>
+    <TYPE>All Grain</TYPE>
+    <STYLE>
+      <NAME>Belgian Dubbel</NAME>
+      <CATEGORY>Trappist Ale</CATEGORY>
+      <CATEGORY_NUMBER>26</CATEGORY_NUMBER>
+      <STYLE_LETTER>B</STYLE_LETTER>
+      <STYLE_GUIDE>BJCP 2015</STYLE_GUIDE>
+      <TYPE>Ale</TYPE>
+      <OG_MIN>1.062</OG_MIN>
+      <OG_MAX>1.075</OG_MAX>
+      <FG_MIN>1.008</FG_MIN>
+      <FG_MAX>1.018</FG_MAX>
+      <IBU_MIN>15</IBU_MIN>
+      <IBU_MAX>25</IBU_MAX>
+      <COLOR_MIN>19</COLOR_MIN>
+      <COLOR_MAX>33</COLOR_MAX>
+      <CARB_MIN>2.5</CARB_MIN>
+      <CARB_MAX>3.2</CARB_MAX>
+      <ABV_MIN>6.0</ABV_MIN>
+      <ABV_MAX>7.6</ABV_MAX>
+      <EXAMPLES>Affligem Dubbel, Chimay Premi&#232;re, Corsendonk Pater, Grimbergen Double, La Trappe Dubbel, St. Bernardus Pater 6, Trappistes Rochefort 6, Westmalle Dubbel</EXAMPLES>
+    </STYLE>
+    <VERSION>1</VERSION>
+    <BATCH_SIZE>20.0</BATCH_SIZE>
+    <BOIL_SIZE>28.0</BOIL_SIZE>
+    <BOIL_TIME>60</BOIL_TIME>
+    <EFFICIENCY>70.0</EFFICIENCY>
+    <EST_OG>1.063</EST_OG>
+    <EST_FG>1.015</EST_FG>
+    <EST_COLOR>43</EST_COLOR>
+    <IBU>17</IBU>
+    <EST_ABV>6.3</EST_ABV>
+    <NOTES></NOTES>
+    <FERMENTATION_STAGES>3</FERMENTATION_STAGES>
+    <PRIMARY_AGE>3</PRIMARY_AGE>
+    <PRIMARY_TEMP>22.0</PRIMARY_TEMP>
+    <SECONDARY_AGE>11</SECONDARY_AGE>
+    <SECONDARY_TEMP>25.0</SECONDARY_TEMP>
+    <TERTIARY_AGE>14</TERTIARY_AGE>
+    <TERTIARY_TEMP>13.0</TERTIARY_TEMP>
+    <CARBONATION>2.2</CARBONATION>
+    <CARBONATION_TEMP>18.0</CARBONATION_TEMP>
+    <PRIMING_SUGAR_NAME></PRIMING_SUGAR_NAME>
+    <FERMENTABLES>
+      <FERMENTABLE>
+        <DISPLAY_COLOR>3 EBC</DISPLAY_COLOR>
+        <NAME>Malt Pilsen MD</NAME>
+        <SUPPLIER>Dingemans</SUPPLIER>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>3.7</AMOUNT>
+        <COLOR>3</COLOR>
+        <YIELD>81.0</YIELD>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <DISPLAY_COLOR>22 EBC</DISPLAY_COLOR>
+        <NAME>Malt Munich II</NAME>
+        <SUPPLIER>Weyermann</SUPPLIER>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>1.0</AMOUNT>
+        <COLOR>22</COLOR>
+        <YIELD>82.2</YIELD>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <DISPLAY_COLOR>3 EBC</DISPLAY_COLOR>
+        <NAME>Flocons de Froment</NAME>
+        <SUPPLIER></SUPPLIER>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.65</AMOUNT>
+        <COLOR>3</COLOR>
+        <YIELD>77.0</YIELD>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <DISPLAY_COLOR>60 EBC</DISPLAY_COLOR>
+        <NAME>Malt Biscuit MD</NAME>
+        <SUPPLIER>Dingemans</SUPPLIER>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.4</AMOUNT>
+        <COLOR>60</COLOR>
+        <YIELD>75.0</YIELD>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <DISPLAY_COLOR>325 EBC</DISPLAY_COLOR>
+        <NAME>Malt Special B MD</NAME>
+        <SUPPLIER>Dingemans</SUPPLIER>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.25</AMOUNT>
+        <COLOR>325</COLOR>
+        <YIELD>72.0</YIELD>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <DISPLAY_COLOR>400 EBC</DISPLAY_COLOR>
+        <NAME>Sucre Candi Fonc&#233;</NAME>
+        <SUPPLIER></SUPPLIER>
+        <TYPE>Sugar</TYPE>
+        <AMOUNT>0.25</AMOUNT>
+        <COLOR>400</COLOR>
+        <YIELD>78.3</YIELD>
+      </FERMENTABLE>
+    </FERMENTABLES>
+    <HOPS>
+      <HOP>
+        <NAME>Hallertau Blanc</NAME>
+        <AMOUNT>0.01</AMOUNT>
+        <ALPHA>8.5</ALPHA>
+        <USE>Boil</USE>
+        <TIME>60</TIME>
+        <FORM>Pellet</FORM>
+      </HOP>
+      <HOP>
+        <NAME>Hallertau Blanc</NAME>
+        <AMOUNT>0.01</AMOUNT>
+        <ALPHA>8.5</ALPHA>
+        <USE>Boil</USE>
+        <TIME>20</TIME>
+        <FORM>Pellet</FORM>
+      </HOP>
+    </HOPS>
+    <MISCS>
+      <MISC>
+        <NAME>Whirlfloc Tablet</NAME>
+        <TYPE>Fining</TYPE>
+        <USE>Boil</USE>
+        <AMOUNT>0.0</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <TIME>10</TIME>
+        <NOTES></NOTES>
+      </MISC>
+    </MISCS>
+    <YEASTS>
+      <YEAST>
+        <NAME>Trappist High Gravity</NAME>
+        <AMOUNT>0.11</AMOUNT>
+        <AMOUNT_IS_WEIGHT>FALSE</AMOUNT_IS_WEIGHT>
+        <FORM>Liquid</FORM>
+        <PRODUCT_ID>3787</PRODUCT_ID>
+        <LABORATORY>Wyeast Labs</LABORATORY>
+        <ATTENUATION>76.0</ATTENUATION>
+      </YEAST>
+    </YEASTS>
+    <MASH>
+      <NAME></NAME>
+      <NOTES></NOTES>
+      <PH>5.4</PH>
+      <SPARGE_TEMP>75.0</SPARGE_TEMP>
+      <MASH_STEPS>
+        <MASH_STEP>
+          <NAME>Saccharification</NAME>
+          <TYPE>Infusion</TYPE>
+          <INFUSE_AMOUNT>18.0</INFUSE_AMOUNT>
+          <INFUSE_TEMP>73.2</INFUSE_TEMP>
+          <STEP_TIME>60</STEP_TIME>
+          <STEP_TEMP>67</STEP_TEMP>
+          <WATER_GRAIN_RATIO></WATER_GRAIN_RATIO>
+        </MASH_STEP>
+      </MASH_STEPS>
+    </MASH>
+  </RECIPE>
+</RECIPES>
