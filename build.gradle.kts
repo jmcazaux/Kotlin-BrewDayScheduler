@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.+")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.1")
 }
@@ -27,5 +28,5 @@ tasks.withType<KotlinCompile>() {
 }
 
 application {
-    mainClassName = "MainKt"
+    mainClass.set("MainKt")
 }
