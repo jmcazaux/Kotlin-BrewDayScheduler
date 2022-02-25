@@ -1,7 +1,12 @@
 package beerxml
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.readValue
+import java.io.File
 
 @JacksonXmlRootElement(localName = "RECIPE")
 data class Recipe(
@@ -29,10 +34,10 @@ data class Recipe(
     @JacksonXmlProperty(localName = "AGE_TEMP") val ageTemp: Double?, // AGE_TEMP
     @JacksonXmlProperty(localName = "CARBONATION_USED") val carbonationUsed: String?, // CARBONATION_USED
     @JacksonXmlProperty(localName = "DATE") val date: String?, // DATE
-    @JacksonXmlProperty(localName = "EST_OG") val estimatedOriginalGravity: Double?, // EST_OG
-    @JacksonXmlProperty(localName = "EST_FG") val estimatedFinalGravity: Double?, // EST_FG
-    @JacksonXmlProperty(localName = "EST_COLOR") val estimatedColor: Int?, // EST_COLOR
-    @JacksonXmlProperty(localName = "IBU") val ibu: Int?, // IBU
+    @JacksonXmlProperty(localName = "EST_OG") val estimatedOriginalGravity: String?, // EST_OG
+    @JacksonXmlProperty(localName = "EST_FG") val estimatedFinalGravity: String?, // EST_FG
+    @JacksonXmlProperty(localName = "EST_COLOR") val estimatedColor: Double?, // EST_COLOR
+    @JacksonXmlProperty(localName = "IBU") val ibu: Double?, // IBU
     @JacksonXmlProperty(localName = "IBU_METHOD") val ibuMethod: String?, // IBU_METHOD
     @JacksonXmlProperty(localName = "EST_ABV") val estimatedAbv: Double?, // EST_ABV
     @JacksonXmlProperty(localName = "ABV") val abv: Double?, // ABV
@@ -55,4 +60,15 @@ data class Recipe(
     @JacksonXmlProperty(localName = "STYLE") val style: Style?,
     @JacksonXmlProperty(localName = "EQUIPMENT") val equipment: Equipment?,
     @JacksonXmlProperty(localName = "MASH") val mash: Mash?,
-)
+) {
+    companion object {
+        /**
+         * Return the list of recipes from a BeerXML file
+         */
+        fun fromFile(file: File): List<Recipe> {
+            val mapper = XmlMapper().registerModule(KotlinModule.Builder().build())
+            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            return mapper.readValue(file.readText())
+        }
+    }
+}
