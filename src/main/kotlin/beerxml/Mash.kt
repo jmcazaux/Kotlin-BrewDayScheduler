@@ -20,5 +20,4 @@ data class Mash(
 
     @JacksonXmlProperty(localName = "MASH_STEPS") val mash: List<MashStep>,
 
-
-    )
+)

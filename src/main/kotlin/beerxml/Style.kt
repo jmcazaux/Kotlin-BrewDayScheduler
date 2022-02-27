@@ -39,5 +39,4 @@ data class Style(
     @JacksonXmlProperty(localName = "COLOR_RANGE") val colorRange: String?, // COLOR_RANGE
     @JacksonXmlProperty(localName = "ABV_RANGE") val abvRange: String?, // ABV_RANGE
 
-
 )

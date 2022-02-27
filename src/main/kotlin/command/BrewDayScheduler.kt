@@ -6,9 +6,11 @@ import java.util.concurrent.Callable
 /**
  * Main brew day scheduler command
  */
-@CommandLine.Command(name = "bds", mixinStandardHelpOptions = true, version = ["1.0 alpha"],
-    description = ["Your brew day scheduler"])
-class BrewDayScheduler: Callable<Int> {
+@CommandLine.Command(
+    name = "bds", mixinStandardHelpOptions = true, version = ["1.0 alpha"],
+    description = ["Your brew day scheduler"]
+)
+class BrewDayScheduler : Callable<Int> {
 
 //    @Parameters(index = "0", description = ["The file whose checksum to calculate."])
 //    lateinit var file: File
