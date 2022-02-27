@@ -8,18 +8,13 @@ import java.util.concurrent.Callable
  */
 @CommandLine.Command(
     name = "bds", mixinStandardHelpOptions = true, version = ["1.0 alpha"],
-    description = ["Your brew day scheduler"]
+    description = ["Your brew day scheduler in a command line!"]
 )
 class BrewDayScheduler : Callable<Int> {
 
-//    @Parameters(index = "0", description = ["The file whose checksum to calculate."])
-//    lateinit var file: File
-//
-//    @Option(names = ["-a", "--algorithm"], description = ["MD5, SHA-1, SHA-256, ..."])
-//    var algorithm = "SHA-256"
-
     override fun call(): Int {
-        println("bds was called")
+        println(CommandLine.Help.Ansi.AUTO.string("@|bold,green,underline Brew Day Scheduler: all systems going...|@"))
+        println(CommandLine.Help.Ansi.AUTO.string("@|yellow Brew Day Scheduler: all done...|@"))
         return 0
     }
 }
