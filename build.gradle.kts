@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm") version "1.5.10"
     id("com.adarshr.test-logger") version "3.1.0" // Logging test results in the console
     application
+    kotlin("kapt") version "1.6.10"
 }
 
 group = "com.ironbird"
@@ -18,6 +19,14 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.+")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.+")
+    implementation("info.picocli:picocli:4.6.3")
+    kapt("info.picocli:picocli-codegen:4.6.3")
+}
+
+kapt {
+    arguments {
+        arg("project", "${project.group}/${project.name}")
+    }
 }
 
 tasks.test {
@@ -30,4 +39,5 @@ tasks.withType<KotlinCompile>() {
 
 application {
     mainClass.set("MainKt")
+    applicationName = "bds"
 }
