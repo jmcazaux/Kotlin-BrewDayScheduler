@@ -1,0 +1,34 @@
+{
+  "name": "test",
+  "tasks": {
+    "mash": {
+      "name": "mash",
+      "taskType": "WAIT",
+      "duration": 0
+    },
+    "boil": {
+      "name": "boil",
+      "taskType": "HEAT_WATER",
+      "duration": 0
+    },
+    "lauter": {
+      "name": "lauter",
+      "taskType": "WAIT",
+      "duration": 0
+    }
+  },
+  "dependencies": [
+    {
+      "fromTask": "mash",
+      "toTask": "lauter",
+      "type": "STARTS_AFTER_END",
+      "delay": 0
+    },
+    {
+      "fromTask": "lauter",
+      "toTask": "boil",
+      "type": "STARTS_AFTER_END",
+      "delay": 0
+    }
+  ]
+}
