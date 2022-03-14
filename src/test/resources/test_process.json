@@ -3,18 +3,15 @@
   "tasks": {
     "mash": {
       "name": "mash",
-      "taskType": "WAIT",
-      "duration": 0
+      "type": "mash"
     },
     "boil": {
       "name": "boil",
-      "taskType": "HEAT_WATER",
-      "duration": 0
+      "type": "boil"
     },
     "lauter": {
       "name": "lauter",
-      "taskType": "WAIT",
-      "duration": 0
+      "type": "lauter"
     }
   },
   "dependencies": [
