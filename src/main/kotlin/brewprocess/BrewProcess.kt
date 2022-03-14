@@ -54,11 +54,7 @@ class BrewProcess(
 
     companion object {
         /**
-<<<<<<< HEAD
-         * Return process from a  file
-=======
-         * Return process from a file
->>>>>>> 6ac9d61 (Basic structure of tasks and process + serialization)
+         * Return a brew process from a file (where one has been serialized)
          */
         fun fromFile(file: File): BrewProcess {
             val mapper = jacksonObjectMapper()

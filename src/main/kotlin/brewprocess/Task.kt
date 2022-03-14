@@ -1,14 +1,25 @@
 package brewprocess
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 
-enum class TaskType {
-    HOP,
-    HEAT_WATER,
-    WAIT,
-}
-
-class Task(val name: String, val taskType: TaskType, var duration: Long = 0) {
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type"
+)
+@JsonSubTypes(
+    value = [
+        Type(value = HeatWater::class, name = "heat_water"),
+        Type(value = Mash::class, name = "mash"),
+        Type(value = Lauter::class, name = "lauter"),
+        Type(value = Boil::class, name = "boil"),
+        Type(value = SimpleAction::class, name = "action"),
+    ]
+)
+sealed class Task(val name: String) {
 
     /* The below is not serialized as is
        As the BrewProcess is a graph we serialize vertices (tasks) and edges (relationships) as two lists
@@ -40,5 +51,31 @@ class Task(val name: String, val taskType: TaskType, var duration: Long = 0) {
             )
         }
         return representations
+    }
+
+}
+
+
+class Mash(name: String) : Task(name) {
+
+}
+
+class Boil(name: String) : Task(name) {
+
+}
+
+class Lauter(name: String) : Task(name) {
+
+}
+
+class SimpleAction(name: String, description: String) : Task(name) {
+
+}
+
+class HeatWater(name: String, usage: For) : Task(name) {
+
+    enum class For {
+        MASH,
+        SPARGE,
     }
 }
