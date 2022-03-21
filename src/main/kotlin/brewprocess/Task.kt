@@ -52,27 +52,24 @@ sealed class Task(val name: String) {
         }
         return representations
     }
-
 }
 
+class Mash(name: String) : Task(name)
 
-class Mash(name: String) : Task(name) {
+class Boil(name: String) : Task(name)
 
-}
+class Lauter(
+    name: String,
+    litersPerMin: Double = 1.0, // How fast you are lautering your mash
+) : Task(name)
 
-class Boil(name: String) : Task(name) {
+class SimpleAction(name: String, description: String) : Task(name)
 
-}
-
-class Lauter(name: String) : Task(name) {
-
-}
-
-class SimpleAction(name: String, description: String) : Task(name) {
-
-}
-
-class HeatWater(name: String, usage: For) : Task(name) {
+class HeatWater(
+    name: String,
+    usage: For,
+    heatingPower: Int, // Power available for the heat source
+) : Task(name) {
 
     enum class For {
         MASH,
