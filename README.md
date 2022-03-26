@@ -66,7 +66,7 @@ I think one of the big strength of Kotlin).
 
 _TBD_
 
-#### Configuring the pre-defined process
+#### Configuring the pre-defined processes
 
 _TBD_
 
