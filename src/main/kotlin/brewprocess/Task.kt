@@ -12,14 +12,23 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 )
 @JsonSubTypes(
     value = [
-        Type(value = HeatWater::class, name = "heat_water"),
-        Type(value = Mash::class, name = "mash"),
-        Type(value = Lauter::class, name = "lauter"),
-        Type(value = Boil::class, name = "boil"),
-        Type(value = SimpleAction::class, name = "action"),
+        Type(value = HeatWater::class, name = Task.HEAT_WATER),
+        Type(value = Mash::class, name = Task.MASH),
+        Type(value = Lauter::class, name = Task.LAUTER),
+        Type(value = Boil::class, name = Task.BOIL),
+        Type(value = SimpleAction::class, name = Task.ACTION),
     ]
 )
 sealed class Task(val name: String) {
+    
+    companion object {
+        const val HEAT_WATER = "heat_water"
+        const val MASH = "mash"
+        const val LAUTER = "lauter"
+        const val BOIL = "boil"
+        const val ACTION = "action"
+    }
+
 
     /* The below is not serialized as is
        As the BrewProcess is a graph we serialize vertices (tasks) and edges (relationships) as two lists
@@ -54,22 +63,27 @@ sealed class Task(val name: String) {
     }
 }
 
-class Mash(name: String) : Task(name)
 
-class Boil(name: String) : Task(name)
+class Mash : Task(MASH)
+
+
+class Boil(
+    heatingPower: Int = 1000, // Power available from the heat source
+) : Task(BOIL)
+
 
 class Lauter(
-    name: String,
     litersPerMin: Double = 1.0, // How fast you are lautering your mash
-) : Task(name)
+) : Task(LAUTER)
 
-class SimpleAction(name: String, description: String) : Task(name)
+
+class SimpleAction(description: String) : Task(ACTION)
+
 
 class HeatWater(
-    name: String,
-    usage: For,
-    heatingPower: Int, // Power available for the heat source
-) : Task(name) {
+    use: For = For.MASH,
+    heatingPower: Int = 1000, // Power available from the heat source
+) : Task(HEAT_WATER) {
 
     enum class For {
         MASH,

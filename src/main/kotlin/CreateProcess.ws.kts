@@ -5,10 +5,10 @@ import java.io.File
 
 val p = BrewProcess("test")
 
-val mash = Mash("mash")
+val mash = Mash()
 p.addTask(mash)
 
-val boil = Boil("boil")
+val boil = Boil(heatingPower = 1000)
 p.addTask(boil, "mash")
 
 val out = File("/tmp/test.json")
