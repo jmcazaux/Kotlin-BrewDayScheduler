@@ -1,7 +1,6 @@
 package brewprocess.dsl
 
 import brewprocess.*
-import brewprocess.HeatWater.For
 
 class BrewProcessBuilder {
     var name: String? = null
@@ -35,35 +34,17 @@ class BrewProcessBuilder {
 fun brewProcess(brewProcess: BrewProcessBuilder.() -> Unit): BrewProcess =
     BrewProcessBuilder().apply(brewProcess).build()
 
-fun mash(mash: TaskBuilder.() -> Unit): Task =
-    TaskBuilder().apply(mash).build(Mash::class)
+fun mash(mash: MashBuilder.() -> Unit): Mash = MashBuilder().apply(mash).build()
 
-fun boil(boil: TaskBuilder.() -> Unit): Task =
-    TaskBuilder().apply(boil).build(Boil::class)
+fun boil(boil: TaskBuilder.() -> Unit): Boil = BoilBuilder().apply(boil).build()
 
-fun lauter(lauter: TaskBuilder.() -> Unit): Task =
-    TaskBuilder().apply(lauter).build(Lauter::class)
+fun lauter(lauter: TaskBuilder.() -> Unit): Lauter = LauterBuilder().apply(lauter).build()
 
-fun action(action: TaskBuilder.() -> Unit): Task =
-    TaskBuilder().apply(action).build(SimpleAction::class)
+fun action(action: TaskBuilder.() -> Unit): SimpleAction = SimpleActionBuilder().apply(action).build()
 
-fun heatWater(heatWater: TaskBuilder.() -> Unit): Task =
-    TaskBuilder().apply(heatWater).build(HeatWater::class)
+fun heatWater(heatWater: TaskBuilder.() -> Unit): HeatWater = HeatWaterBuilder().apply(heatWater).build()
 
-val mash = mash {}
-val boil = boil {
-    heatingPower = 1000
-}
-val lauter = lauter {
-    litersPerMin = 1.0
-}
-val action = action {
-    description = "This is a simple action"
-}
-val heatWater = heatWater {
-    use = For.MASH
-    heatingPower = 1000
-}
+fun chill(chill: TaskBuilder.() -> Unit): Chill = ChillBuilder().apply(chill).build()
 
 
 val threeVessels = brewProcess {
