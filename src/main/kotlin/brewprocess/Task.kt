@@ -17,16 +17,18 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
         Type(value = Lauter::class, name = Task.LAUTER),
         Type(value = Boil::class, name = Task.BOIL),
         Type(value = SimpleAction::class, name = Task.ACTION),
+        Type(value = Chill::class, name = Task.CHILL),
     ]
 )
 sealed class Task(val name: String) {
-    
+
     companion object {
         const val HEAT_WATER = "heat_water"
         const val MASH = "mash"
         const val LAUTER = "lauter"
         const val BOIL = "boil"
         const val ACTION = "action"
+        const val CHILL = "chill"
     }
 
 
@@ -64,29 +66,37 @@ sealed class Task(val name: String) {
 }
 
 
-class Mash : Task(MASH)
+class Mash(name: String? = MASH) : Task(name ?: MASH)
 
 
 class Boil(
-    heatingPower: Int = 1000, // Power available from the heat source
-) : Task(BOIL)
+    name: String? = BOIL,
+    val heatingPower: Int = 1000, // Power available from the heat source
+) : Task(name ?: BOIL)
 
 
 class Lauter(
-    litersPerMin: Double = 1.0, // How fast you are lautering your mash
-) : Task(LAUTER)
+    name: String? = LAUTER,
+    val litersPerMin: Double = 1.0, // How fast you are lautering your mash
+) : Task(name ?: LAUTER)
 
 
-class SimpleAction(description: String) : Task(ACTION)
+class SimpleAction(name: String, val description: String? = null) : Task(name)
 
 
 class HeatWater(
-    use: For = For.MASH,
-    heatingPower: Int = 1000, // Power available from the heat source
-) : Task(HEAT_WATER) {
+    name: String,
+    val use: For = For.MASH,
+    val heatingPower: Int = 1000, // Power available from the heat source
+) : Task(name) {
 
     enum class For {
         MASH,
         SPARGE,
     }
 }
+
+class Chill(
+    name: String? = null,
+    val chillingPower: Int
+) : Task(name = name ?: CHILL)
