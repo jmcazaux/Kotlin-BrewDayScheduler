@@ -31,10 +31,8 @@ class BrewProcessBuilder {
     }
 }
 
-
 fun brewProcess(brewProcess: BrewProcessBuilder.() -> Unit): BrewProcess =
     BrewProcessBuilder().apply(brewProcess).build()
-
 
 class DependencyBuilder {
     lateinit var fromTask: String
@@ -52,7 +50,6 @@ class DependencyBuilder {
     }
 }
 
-
 fun mash(mash: MashBuilder.() -> Unit): Mash = MashBuilder().apply(mash).build()
 
 fun boil(boil: TaskBuilder.() -> Unit): Boil = BoilBuilder().apply(boil).build()
@@ -67,19 +64,3 @@ fun chill(chill: TaskBuilder.() -> Unit): Chill = ChillBuilder().apply(chill).bu
 
 fun dependency(dependency: DependencyBuilder.() -> Unit): DependencyRepresentation =
     DependencyBuilder().apply(dependency).build()
-
-
-val threeVessels = brewProcess {
-    name = "threeVessels"
-    tasks = listOf(
-        mash {},
-        boil { heatingPower = 1000 }
-    )
-    dependencies = listOf(
-        dependency {
-            fromTask = "mash"
-            toTask = "boil"
-            type = DependencyType.STARTS_AFTER_END
-        }
-    )
-}
