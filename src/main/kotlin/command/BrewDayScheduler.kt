@@ -4,7 +4,7 @@ import picocli.CommandLine
 import java.util.concurrent.Callable
 
 /**
- * Main brew day scheduler command
+ * Main brew day scheduler command trigger again
  */
 @CommandLine.Command(
     name = "bds", mixinStandardHelpOptions = true, version = ["1.0 alpha"],
