@@ -6,6 +6,7 @@ plugins {
     application
     kotlin("kapt") version "1.6.10"
     jacoco
+    id("org.sonarqube") version "3.5.0.2730"
 }
 
 group = "com.ironbird"
@@ -45,6 +46,12 @@ tasks.jacocoTestReport {
         xml.required.set(true)
         html.required.set(true)
     }
+}
+
+sonar.properties {
+    property("sonar.projectKey", "Kotlin-BrewDayScheduler")
+    property("sonar.organization", "jmcazaux")
+    property("sonar.host.url", "https://sonarcloud.io")
 }
 
 application {
