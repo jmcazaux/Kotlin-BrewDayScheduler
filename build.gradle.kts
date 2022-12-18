@@ -5,6 +5,8 @@ plugins {
     id("com.adarshr.test-logger") version "3.1.0" // Logging test results in the console
     application
     kotlin("kapt") version "1.6.10"
+    jacoco
+    id("org.sonarqube") version "3.5.0.2730"
 }
 
 group = "com.ironbird"
@@ -36,6 +38,20 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+}
+
+sonar.properties {
+    property("sonar.projectKey", "Kotlin-BrewDayScheduler")
+    property("sonar.organization", "jmcazaux")
+    property("sonar.host.url", "https://sonarcloud.io")
 }
 
 application {
