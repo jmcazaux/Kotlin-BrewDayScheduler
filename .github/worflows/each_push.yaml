@@ -33,5 +33,4 @@ jobs:
     - name: Run tests & build with Gradle
       run: ./gradlew test jacocoTestReport build
 
-  # TODO Add sona here would it then
-
+  # TODO Add sonar here
