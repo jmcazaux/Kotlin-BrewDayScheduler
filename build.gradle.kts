@@ -5,6 +5,7 @@ plugins {
     id("com.adarshr.test-logger") version "3.1.0" // Logging test results in the console
     application
     kotlin("kapt") version "1.6.10"
+    jacoco
 }
 
 group = "com.ironbird"
@@ -36,6 +37,14 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
 
 application {
