@@ -37,5 +37,8 @@ jobs:
         BUILD_VERSION: ${{ needs.compute-version.outputs.build_version }}
       with:
         args: >
+          -Dsonar.organization=jmcazaux
+          -Dsonar.projectKey=Kotlin-BrewDayScheduler
           -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
+          
 
