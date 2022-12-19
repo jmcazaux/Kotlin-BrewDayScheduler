@@ -28,5 +28,14 @@ jobs:
       uses: gradle/gradle-build-action@v2
       with:
         arguments: test jacocoTestReport
-
+        
+    - name: Sonar Analaysis
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        BUILD_VERSION: ${{ needs.compute-version.outputs.build_version }}
+      with:
+        args: >
+          -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
 
