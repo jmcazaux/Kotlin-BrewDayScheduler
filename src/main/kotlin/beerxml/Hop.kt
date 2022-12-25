@@ -15,7 +15,7 @@ data class Hop(
     @JacksonXmlProperty(localName = "FORM") val form: String?, // FORM
     @JacksonXmlProperty(localName = "BETA") val beta: Double?, // BETA
     @JacksonXmlProperty(localName = "HSI") val hsi: Int?, // HSI
-    @JacksonXmlProperty(localName = "DISPLAY_AMOUNT") val display_aAmount: String?, // DISPLAY_AMOUNT
+    @JacksonXmlProperty(localName = "DISPLAY_AMOUNT") val displayAmount: String?, // DISPLAY_AMOUNT
     @JacksonXmlProperty(localName = "INVENTORY") val inventory: String?, // INVENTORY
     @JacksonXmlProperty(localName = "DISPLAY_TIME") val displayTime: String?, // DISPLAY_TIME
 )

@@ -19,8 +19,8 @@ data class Recipe(
     @JacksonXmlProperty(localName = "BOIL_TIME") val boilTime: Int, // BOIL_TIME
     @JacksonXmlProperty(localName = "EFFICIENCY") val efficiency: Double, // EFFICIENCY
     @JacksonXmlProperty(localName = "NOTES") val notes: String?, // NOTES
-    @JacksonXmlProperty(localName = "TASTE_NOTES") val taste_notes: String?, // TASTE_NOTES
-    @JacksonXmlProperty(localName = "TASTE_RATING") val taste_rating: Int?, // TASTE_RATING
+    @JacksonXmlProperty(localName = "TASTE_NOTES") val tasteNotes: String?, // TASTE_NOTES
+    @JacksonXmlProperty(localName = "TASTE_RATING") val tasteRating: Int?, // TASTE_RATING
     @JacksonXmlProperty(localName = "OG") val og: Double?, // OG
     @JacksonXmlProperty(localName = "FG") val fg: Double?, // FG
     @JacksonXmlProperty(localName = "CARBONATION") val carbonation: Double?, // CARBONATION
