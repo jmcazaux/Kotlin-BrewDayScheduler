@@ -1,3 +1,8 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Kotlin-BrewDayScheduler&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Kotlin-BrewDayScheduler) 
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Kotlin-BrewDayScheduler&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Kotlin-BrewDayScheduler) 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Kotlin-BrewDayScheduler&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Kotlin-BrewDayScheduler) 
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Kotlin-BrewDayScheduler&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Kotlin-BrewDayScheduler)
+----
 # Kotlin-BrewDayScheduler
 
 A Kotlin experimentation... (Generating home brewing schedule from a beer recipe)
