@@ -21,8 +21,8 @@ data class Equipment(
     @JacksonXmlProperty(localName = "NOTES") val notes: String?, // NOTES
     @JacksonXmlProperty(localName = "DISPLAY_BOIL_SIZE") val displayBoilSize: String?, // DISPLAY_BOIL_SIZE
     @JacksonXmlProperty(localName = "DISPLAY_BATCH_SIZE") val displayBatchSize: String?, // DISPLAY_BATCH_SIZE
-    @JacksonXmlProperty(localName = "DISPLAY_TUN_VOLUME") val display_tun_volume: String?, // DISPLAY_TUN_VOLUME
-    @JacksonXmlProperty(localName = "DISPLAY_TUN_WEIGHT") val display_tun_weight: String?, // DISPLAY_TUN_WEIGHT
+    @JacksonXmlProperty(localName = "DISPLAY_TUN_VOLUME") val displayTunVolume: String?, // DISPLAY_TUN_VOLUME
+    @JacksonXmlProperty(localName = "DISPLAY_TUN_WEIGHT") val displayTunWeight: String?, // DISPLAY_TUN_WEIGHT
     @JacksonXmlProperty(localName = "DISPLAY_TOP_UP_WATER") val displayTopUpWater: String?, // DISPLAY_TOP_UP_WATER
     @JacksonXmlProperty(localName = "DISPLAY_TRUB_CHILLER_LOSS") val displayTrubChillerLoss: String?, // DISPLAY_TRUB_CHILLER_LOSS
     @JacksonXmlProperty(localName = "DISPLAY_LAUTER_DEADSPACE") val displayLauterDeadspace: String?, // DISPLAY_LAUTER_DEADSPACE
