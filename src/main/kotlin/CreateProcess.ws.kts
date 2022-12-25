@@ -1,14 +1,14 @@
+import brewprocess.Boil
 import brewprocess.BrewProcess
-import brewprocess.Task
-import brewprocess.TaskType
+import brewprocess.Mash
 import java.io.File
 
 val p = BrewProcess("test")
 
-val mash = Task("mash", TaskType.WAIT)
+val mash = Mash()
 p.addTask(mash)
 
-val boil = Task("boil", TaskType.HEAT_WATER)
+val boil = Boil(heatingPower = 1000)
 p.addTask(boil, "mash")
 
 val out = File("/tmp/test.json")

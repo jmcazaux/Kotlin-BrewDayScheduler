@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.7.10"
     id("com.adarshr.test-logger") version "3.1.0" // Logging test results in the console
     application
-    kotlin("kapt") version "1.6.10"
+    kotlin("kapt") version "1.7.10"
     jacoco
     id("org.sonarqube") version "3.5.0.2730"
 }
@@ -18,9 +18,9 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.3")
     implementation("info.picocli:picocli:4.6.3")
     kapt("info.picocli:picocli-codegen:4.6.3")
     implementation(kotlin("script-runtime"))

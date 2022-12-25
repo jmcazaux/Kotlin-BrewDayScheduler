@@ -7,6 +7,9 @@ import java.io.File
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+/**
+ * Model a brew process
+ */
 class BrewProcess(
     val name: String,
     val tasks: MutableMap<String, Task> = HashMap(), // K= task.name, V = task
@@ -51,7 +54,7 @@ class BrewProcess(
 
     companion object {
         /**
-         * Return process from a  file
+         * Return a brew process from a file (where one has been serialized)
          */
         fun fromFile(file: File): BrewProcess {
             val mapper = jacksonObjectMapper()

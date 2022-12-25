@@ -1,14 +1,36 @@
 package brewprocess
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 
-enum class TaskType {
-    HOP,
-    HEAT_WATER,
-    WAIT,
-}
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type"
+)
+@JsonSubTypes(
+    value = [
+        Type(value = HeatWater::class, name = Task.HEAT_WATER),
+        Type(value = Mash::class, name = Task.MASH),
+        Type(value = Lauter::class, name = Task.LAUTER),
+        Type(value = Boil::class, name = Task.BOIL),
+        Type(value = SimpleAction::class, name = Task.ACTION),
+        Type(value = Chill::class, name = Task.CHILL),
+    ]
+)
+sealed class Task(val name: String) {
 
-class Task(val name: String, val taskType: TaskType, var duration: Long = 0) {
+    companion object {
+        const val HEAT_WATER = "heat_water"
+        const val MASH = "mash"
+        const val LAUTER = "lauter"
+        const val BOIL = "boil"
+        const val ACTION = "action"
+        const val CHILL = "chill"
+    }
+
 
     /* The below is not serialized as is
        As the BrewProcess is a graph we serialize vertices (tasks) and edges (relationships) as two lists
@@ -42,3 +64,39 @@ class Task(val name: String, val taskType: TaskType, var duration: Long = 0) {
         return representations
     }
 }
+
+
+class Mash(name: String? = MASH) : Task(name ?: MASH)
+
+
+class Boil(
+    name: String? = BOIL,
+    val heatingPower: Int = 1000, // Power available from the heat source
+) : Task(name ?: BOIL)
+
+
+class Lauter(
+    name: String? = LAUTER,
+    val litersPerMin: Double = 1.0, // How fast you are lautering your mash
+) : Task(name ?: LAUTER)
+
+
+class SimpleAction(name: String, val description: String? = null) : Task(name)
+
+
+class HeatWater(
+    name: String,
+    val use: For = For.MASH,
+    val heatingPower: Int = 1000, // Power available from the heat source
+) : Task(name) {
+
+    enum class For {
+        MASH,
+        SPARGE,
+    }
+}
+
+class Chill(
+    name: String? = null,
+    val chillingPower: Int
+) : Task(name = name ?: CHILL)
