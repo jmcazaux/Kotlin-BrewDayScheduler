@@ -1,5 +1,6 @@
 package command
 
+import command.config.BdsConfig
 import picocli.CommandLine
 import java.util.concurrent.Callable
 
@@ -11,6 +12,9 @@ import java.util.concurrent.Callable
     description = ["Your brew day scheduler in a command line!"]
 )
 class BrewDayScheduler : Callable<Int> {
+
+    @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = ["display a help message"])
+    private var helpRequested: Boolean = false;
 
     override fun call(): Int {
         println(CommandLine.Help.Ansi.AUTO.string("@|bold,green,underline Brew Day Scheduler: all systems going...|@"))
