@@ -1,43 +1,36 @@
 package command.config
 
-import brewprocess.BrewProcess
 import picocli.CommandLine
 import picocli.CommandLine.ExitCode
 import java.io.File
 import java.util.concurrent.Callable
 
-
-class AppConfig {
-    lateinit var brewProcess: BrewProcess
-    internal set
-
-    var isDefault: Boolean = false  //Whether this configuration is a default one or it has been set by the user
-    internal set
+object AppConfig {
+    var brewProcess = DefaultProcesses.THREE_VESSELS
+    var isDefault = true // Whether this configuration is a default one or it has been set by the user
 }
 
-
 @CommandLine.Command(
-    name = "config", mixinStandardHelpOptions = true,
+    name = "config",
+    mixinStandardHelpOptions = true,
     description = ["Configure brew day scheduler according to your process"]
 )
-class ConfigCommand(val configFile: File) : Callable<Int> {
-
-    var configuration: AppConfig
-    private set
+class ConfigCommand(private val configFile: File) : Callable<Int> {
 
     init {
-        this.configuration = AppConfig()
-        this.configuration.brewProcess = DefaultProcesses.THREE_VESSELS
+        if (configFile.exists() && configFile.length() > 0) {
+            this.loadConfigFromFile()
+        }
     }
 
     @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = ["display help for this command"])
-    private var helpRequested: Boolean = false;
+    private var helpRequested: Boolean = false
 
     @CommandLine.Option(names = ["-l", "--list"], description = ["list the current configuration"])
-    private var listRequested: Boolean = false;
+    private var listRequested: Boolean = false
 
     @CommandLine.Option(names = ["-s", "--set-up"], description = ["interactively set up a configuration"])
-    private var setUpRequested: Boolean = false;
+    private var setUpRequested: Boolean = false
 
     override fun call(): Int {
         if (this.listRequested) {
@@ -52,8 +45,6 @@ class ConfigCommand(val configFile: File) : Callable<Int> {
         return ExitCode.SOFTWARE
     }
 
-    fun hasConfig(): Boolean = this.configFile.exists() && this.configFile.length() > 0
-
     fun setUpAndSaveConfig(): Int {
         TODO("Not yet implemented")
     }
@@ -62,8 +53,7 @@ class ConfigCommand(val configFile: File) : Callable<Int> {
         TODO("Not yet implemented")
     }
 
-    private fun loadConfigOrDefault(): BrewProcess {
+    private fun loadConfigFromFile() {
         TODO("Not yet implemented")
     }
-
 }

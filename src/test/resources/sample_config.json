@@ -1,0 +1,43 @@
+{
+  "brew_process": {
+    "name": "test",
+    "tasks": {
+      "mash": {
+        "name": "mash",
+        "type": "mash"
+      },
+      "boil": {
+        "name": "boil",
+        "type": "boil"
+      },
+      "lauter": {
+        "name": "lauter",
+        "type": "lauter"
+      },
+      "chill": {
+        "name": "chill",
+        "type": "chill"
+      }
+    },
+    "dependencies": [
+      {
+        "fromTask": "mash",
+        "toTask": "lauter",
+        "type": "STARTS_AFTER_END",
+        "delay": 0
+      },
+      {
+        "fromTask": "lauter",
+        "toTask": "boil",
+        "type": "STARTS_AFTER_END",
+        "delay": 0
+      },
+      {
+        "fromTask": "boil",
+        "toTask": "chill",
+        "type": "STARTS_AFTER_END",
+        "delay": 0
+      }
+    ]
+  }
+}
