@@ -1,13 +1,21 @@
 package command.config
 
+import brewprocess.BrewProcess
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import picocli.CommandLine
 import picocli.CommandLine.ExitCode
 import java.io.File
 import java.util.concurrent.Callable
+import kotlin.properties.Delegates
 
+@JsonIgnoreProperties(value = ["isDefault"])
 object AppConfig {
-    var brewProcess = DefaultProcesses.THREE_VESSELS
-    var isDefault = true // Whether this configuration is a default one or it has been set by the user
+    var process by Delegates.notNull<BrewProcess>()
+
+    var isDefault by Delegates.notNull<Boolean>() // Whether this configuration is a default one or it has been set by the user
 }
 
 @CommandLine.Command(
@@ -18,8 +26,12 @@ object AppConfig {
 class ConfigCommand(private val configFile: File) : Callable<Int> {
 
     init {
+        AppConfig.process = DefaultProcesses.THREE_VESSELS
+        AppConfig.isDefault = true
+
         if (configFile.exists() && configFile.length() > 0) {
             this.loadConfigFromFile()
+            AppConfig.isDefault = false
         }
     }
 
@@ -54,6 +66,8 @@ class ConfigCommand(private val configFile: File) : Callable<Int> {
     }
 
     private fun loadConfigFromFile() {
-        TODO("Not yet implemented")
+        val mapper = jacksonObjectMapper()
+        val config = mapper.readValue<JsonNode>(this.configFile.readText())
+        AppConfig.process = mapper.treeToValue(config["process"], BrewProcess::class.java)
     }
 }

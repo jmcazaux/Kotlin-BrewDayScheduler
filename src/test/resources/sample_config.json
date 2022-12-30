@@ -1,5 +1,5 @@
 {
-  "brew_process": {
+  "process": {
     "name": "test",
     "tasks": {
       "mash": {
