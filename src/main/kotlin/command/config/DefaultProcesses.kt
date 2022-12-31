@@ -16,6 +16,11 @@ class DefaultProcesses {
                     heatingPower = 500
                 },
                 mash {},
+                heatWater {
+                    name = "Heat Sparge Water"
+                    use = HeatWater.For.MASH
+                    heatingPower = 500
+                },
                 lauter { litersPerMin = 1.0 },
                 boil { heatingPower = 1000 },
                 action {
@@ -35,6 +40,12 @@ class DefaultProcesses {
                     fromTask = "mash"
                     toTask = "lauter"
                     type = DependencyType.STARTS_AFTER_END
+                },
+                dependency {
+                    fromTask = "lauter"
+                    toTask = "Heat Sparge Water"
+                    type = DependencyType.FINISH_BEFORE_END
+                    delay = 180
                 },
                 dependency {
                     fromTask = "lauter"
