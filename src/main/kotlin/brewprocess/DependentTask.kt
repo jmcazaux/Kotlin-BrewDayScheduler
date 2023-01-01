@@ -9,7 +9,8 @@ enum class DependencyType {
 class DependentTask(
     val to: Task,
     val type: DependencyType,
-    val delay: Int
+    val delay: Int,
+    val parametrizeDelay: Boolean = false
 )
 
 /**
@@ -20,5 +21,6 @@ class DependencyRepresentation(
     val fromTask: String,
     val toTask: String,
     val type: DependencyType,
-    val delay: Int
+    val delay: Int,
+    val parametrizeDelay: Boolean = false
 )

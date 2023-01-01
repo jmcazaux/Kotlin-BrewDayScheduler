@@ -12,7 +12,7 @@ import kotlin.reflect.KProperty
  */
 class BrewProcess(
     val name: String,
-    val tasks: MutableMap<String, Task> = HashMap(), // K= task.name, V = task
+    val tasks: MutableMap<String, Task> = HashMap() // K= task.name, V = task
 ) {
     // Only used for serialization
     var dependencies: List<DependencyRepresentation> by DependenciesDelegate()
@@ -28,9 +28,10 @@ class BrewProcess(
         task: Task,
         relativeTo: String? = null,
         constraint: DependencyType = DependencyType.STARTS_AFTER_END,
-        delay: Int = 0
-    ) {
+        delay: Int = 0,
+        parametrizeDelay: Boolean = false
 
+    ) {
         if (relativeTo != null) {
             val from = tasks.getValue(relativeTo)
 
@@ -38,7 +39,8 @@ class BrewProcess(
                 DependentTask(
                     to = task,
                     type = constraint,
-                    delay = delay
+                    delay = delay,
+                    parametrizeDelay = parametrizeDelay
                 )
             )
         }
@@ -85,13 +87,17 @@ private class DependenciesDelegate : ReadWriteProperty<BrewProcess, List<Depende
         property: KProperty<*>,
         value: List<DependencyRepresentation>
     ) {
-
         for (representation in value) {
             val from = thisRef.tasks.getValue(representation.fromTask)
             val to = thisRef.tasks.getValue(representation.toTask)
 
             from.addDependentTask(
-                DependentTask(to = to, type = representation.type, delay = representation.delay)
+                DependentTask(
+                    to = to,
+                    type = representation.type,
+                    delay = representation.delay,
+                    parametrizeDelay = representation.parametrizeDelay
+                )
             )
         }
     }
