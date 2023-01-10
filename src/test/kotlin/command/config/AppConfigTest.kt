@@ -8,7 +8,7 @@ import java.io.File
 internal class AppConfigTest {
 
     @Test
-    fun appConfigReadBeforeInitThrows() {
+    fun readAppConfigBeforeInitThrows() {
         assertThrows<IllegalStateException> {
             AppConfig.process
         }
@@ -19,7 +19,7 @@ internal class AppConfigTest {
     }
 
     @Test
-    fun appConfigReadAfterInit() {
+    fun readAppConfigAfterInitDoesNotThrow() {
         val sampleFile = File(this.javaClass.classLoader.getResource("sample_config.json").file)
         ConfigCommand(sampleFile)
 

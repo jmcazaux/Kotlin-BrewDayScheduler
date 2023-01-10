@@ -115,8 +115,9 @@ class Lauter(
                 type = ProcessParameterType.DOUBLE,
                 name = "lautering throughput",
                 prompt = "Define the throughput when lautering",
-                description = "This will define the time you will need to lauter your mash from the water throughput expressed as liters per minute.\n" +
-                    "Must be greater than 0 (decimals allowed).",
+                description = "This will define the time you will need to lauter your mash from the water throughput " +
+                        "expressed as liters per minute.\n" +
+                        "Must be greater than 0 (decimals allowed).",
                 setter = this::setLitersPerMin,
                 current = this.litersPerMin
             )

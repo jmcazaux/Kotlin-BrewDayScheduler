@@ -7,7 +7,7 @@ import java.io.File
 internal class ConfigCommandTest {
 
     @Test
-    fun initWithFile() {
+    fun initWithFileIsNotDefaultConfig() {
         val sampleFile = File(this.javaClass.classLoader.getResource("sample_config.json").file)
         ConfigCommand(sampleFile)
 
@@ -18,7 +18,7 @@ internal class ConfigCommandTest {
     }
 
     @Test
-    fun initWithoutFile() {
+    fun initWithoutFileIsDefaultConfig() {
         val nonExistingFile = File("that_does_not_exists")
         Assertions.assertFalse(
             nonExistingFile.exists(),

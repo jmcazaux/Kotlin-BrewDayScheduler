@@ -9,14 +9,14 @@ import kotlin.test.assertEquals
 internal class BrewProcessBuilderTest {
 
     @Test
-    fun testMash() {
+    fun canBuildMash() {
         val mash = mash {}
         Assertions.assertEquals(Mash::class, mash::class)
         Assertions.assertEquals(Task.MASH, mash.name)
     }
 
     @Test
-    fun testBoil() {
+    fun canBuildBoil() {
         val boil = boil {
             name = "setName"
             heatingPower = 10
@@ -34,7 +34,7 @@ internal class BrewProcessBuilderTest {
     }
 
     @Test
-    fun testLauter() {
+    fun canBuildLauter() {
         val lauter = lauter {
             name = "setName"
             litersPerMin = 0.3
@@ -51,7 +51,7 @@ internal class BrewProcessBuilderTest {
     }
 
     @Test
-    fun testAction() {
+    fun canBuildAction() {
         val action = action {
             name = "anAction"
             description = "aDescription"
@@ -69,7 +69,7 @@ internal class BrewProcessBuilderTest {
     }
 
     @Test
-    fun testHeatWater() {
+    fun canBuildHeatWater() {
         val heatMashWater = heatWater {
             name = "heatMashWater"
             use = HeatWater.For.MASH
@@ -106,7 +106,7 @@ internal class BrewProcessBuilderTest {
     }
 
     @Test
-    fun testChill() {
+    fun canBuildChill() {
         val chill = chill {
             chillingPower = 10
         }
@@ -116,14 +116,14 @@ internal class BrewProcessBuilderTest {
         Assertions.assertEquals(10, chill.chillingPower)
 
         // Test assertions are thrown when not providing heatingPower
-        var thrown = assertThrows<IllegalArgumentException> {
+        val thrown = assertThrows<IllegalArgumentException> {
             chill {}
         }
         assertEquals(thrown.message, "chillingPower must be defined")
     }
 
     @Test
-    fun testBrewProcess() {
+    fun canBuildBrewProcess() {
         val thrown = assertThrows<IllegalArgumentException> {
             brewProcess {}
         }
@@ -169,6 +169,7 @@ internal class BrewProcessBuilderTest {
                     toTask = "Sanitize Chiller"
                     type = DependencyType.FINISH_BEFORE_END
                     delay = 600
+                    parametrizedDelay = true
                 },
                 dependency {
                     fromTask = "boil"
@@ -196,5 +197,6 @@ internal class BrewProcessBuilderTest {
         Assertions.assertEquals(boil.dependentTasks[0].to, sanitizeChiller)
         Assertions.assertEquals(boil.dependentTasks[0].type, DependencyType.FINISH_BEFORE_END)
         Assertions.assertEquals(boil.dependentTasks[0].delay, 600)
+        Assertions.assertTrue(boil.dependentTasks[0].parametrizeDelay)
     }
 }

@@ -7,7 +7,7 @@ import java.io.File
 internal class BrewProcessTest {
 
     @Test
-    fun fromFile() {
+    fun brewProcessCanBeReadFromJsonFile() {
         val testFile = File(this.javaClass.classLoader.getResource("test_process.json").file)
 
         val process = BrewProcess.fromFile(testFile)
