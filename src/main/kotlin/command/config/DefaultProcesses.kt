@@ -55,8 +55,9 @@ class DefaultProcesses {
                 dependency {
                     fromTask = "boil"
                     toTask = "Sanitize Chiller"
-                    type = DependencyType.FINISH_BEFORE_END
+                    type = DependencyType.STARTS_BEFORE_END
                     delay = 600
+                    parametrizedDelay = true
                 },
                 dependency {
                     fromTask = "boil"

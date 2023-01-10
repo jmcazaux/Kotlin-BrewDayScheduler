@@ -1,13 +1,14 @@
 package command.config
 
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 import java.io.File
 
+@TestMethodOrder(OrderAnnotation::class)
 internal class AppConfigTest {
 
     @Test
+    @Order(1)
     fun readAppConfigBeforeInitThrows() {
         assertThrows<IllegalStateException> {
             AppConfig.process
@@ -19,6 +20,7 @@ internal class AppConfigTest {
     }
 
     @Test
+    @Order(2)
     fun readAppConfigAfterInitDoesNotThrow() {
         val sampleFile = File(this.javaClass.classLoader.getResource("sample_config.json").file)
         ConfigCommand(sampleFile)

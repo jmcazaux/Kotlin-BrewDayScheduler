@@ -3,6 +3,7 @@ package brewprocess
 enum class DependencyType {
     STARTS_AFTER_START,
     STARTS_AFTER_END,
+    STARTS_BEFORE_END,
     FINISH_BEFORE_END
 }
 
