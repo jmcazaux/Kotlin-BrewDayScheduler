@@ -22,7 +22,8 @@ class BrewProcessBuilder {
                 DependentTask(
                     to,
                     dependency.type,
-                    dependency.delay
+                    dependency.delay,
+                    dependency.parametrizeDelay,
                 )
             )
         }
@@ -39,13 +40,15 @@ class DependencyBuilder {
     lateinit var toTask: String
     lateinit var type: DependencyType
     var delay: Int = 0
+    var parametrizedDelay: Boolean = false
 
     fun build(): DependencyRepresentation {
         return DependencyRepresentation(
             fromTask = fromTask,
             toTask = toTask,
             type = type,
-            delay = delay
+            delay = delay,
+            parametrizeDelay = parametrizedDelay
         )
     }
 }
