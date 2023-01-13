@@ -1,8 +1,10 @@
 package brewprocess
 
-enum class ProcessParameterType(val type: Class<*>) {
-    INT(Int::class.java),
-    DOUBLE(Double::class.java)
+import kotlin.reflect.KClass
+
+enum class ProcessParameterType(val type: KClass<*>) {
+    INT(Int::class),
+    DOUBLE(Double::class)
 }
 
 data class ProcessParameter<T>(
