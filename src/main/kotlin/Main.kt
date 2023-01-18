@@ -1,4 +1,8 @@
+import command.BrewDayScheduler
+import command.config.AppConfig
+import command.config.ConfigCommand
 import command.prompt.Prompt
+import picocli.CommandLine
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -6,21 +10,22 @@ fun main(args: Array<String>) {
     val configFilePath = userHomeDir + AppConstants.CONFIG_FILE_REL_PATH
     val configFile = File(configFilePath)
 
-    val r = Prompt(
-        valueType = Int::class,
-        valueName = "ValueName",
-        question = "QuestionToTheUser",
-        help = "ThisShouldHelpYou",
-        default = 4,
-        min = 3,
-        max = 8
-    ).prompt()
+    val configCommand = ConfigCommand(configFile)
 
-    println("We got $r")
+    val setupConfigPrompt = Prompt(
+        valueName = "setup",
+        valueType = Boolean::class,
+        question = "Would you like to define your brew process now?",
+        help = "Defining the parameters of your brew process is necessary to plan your brew schedule accurately.\n" +
+            "It id just a few questions about your equipment and process.",
+        default = true
+    )
 
-//    exitProcess(
-//        CommandLine(BrewDayScheduler())
-//            .addSubcommand(ConfigCommand(configFile))
-//            .execute(*args)
-//    )
+    if (AppConfig.isDefault && setupConfigPrompt.prompt() == true) {
+        configCommand.setUpAndSaveConfig()
+    }
+
+    CommandLine(BrewDayScheduler())
+        .addSubcommand(configCommand)
+        .execute(*args)
 }
