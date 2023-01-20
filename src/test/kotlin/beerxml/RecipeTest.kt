@@ -1,8 +1,10 @@
 package beerxml
 
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
 import java.io.File
 
+@TestClassOrder(ClassOrderer.OrderAnnotation::class)
+@Order(2)
 class RecipeTest {
 
     @Test
