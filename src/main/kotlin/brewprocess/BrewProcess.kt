@@ -12,6 +12,7 @@ import kotlin.reflect.KProperty
  */
 class BrewProcess(
     val name: String,
+    val description: String? = null,
     val tasks: MutableMap<String, Task> = HashMap() // K= task.name, V = task
 ) {
     // Only used for serialization

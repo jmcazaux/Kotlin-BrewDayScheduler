@@ -4,11 +4,15 @@ import brewprocess.*
 
 class BrewProcessBuilder {
     var name: String? = null
+    var description: String? = null
     var tasks: List<Task> = ArrayList()
     var dependencies: List<DependencyRepresentation> = ArrayList()
 
     fun build(): BrewProcess {
-        val brewProcess = BrewProcess(name ?: throw IllegalArgumentException("process name must be defined"))
+        val brewProcess = BrewProcess(
+            name ?: throw IllegalArgumentException("process name must be defined"),
+            description
+        )
 
         for (task in tasks) {
             brewProcess.addTask(task)
@@ -23,7 +27,7 @@ class BrewProcessBuilder {
                     to,
                     dependency.type,
                     dependency.delay,
-                    dependency.parametrizeDelay,
+                    dependency.parametrizeDelay
                 )
             )
         }

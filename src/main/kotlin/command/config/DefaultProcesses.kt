@@ -7,7 +7,7 @@ import brewprocess.dsl.*
 class DefaultProcesses {
     companion object {
         val THREE_VESSELS = brewProcess {
-            name = "threeVessels"
+            name = "Three Vessels"
 
             tasks = listOf(
                 heatWater {

@@ -1,5 +1,6 @@
 {
-  "name": "test",
+  "name": "test process name",
+  "description": "test process description",
   "tasks": {
     "mash": {
       "name": "mash",
