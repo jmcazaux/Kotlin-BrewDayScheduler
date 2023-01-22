@@ -116,8 +116,8 @@ class Lauter(
                 name = "lautering throughput",
                 prompt = "Define the throughput when lautering",
                 description = "This will define the time you will need to lauter your mash from the water throughput " +
-                        "expressed as liters per minute.\n" +
-                        "Must be greater than 0 (decimals allowed).",
+                    "expressed as liters per minute.\n" +
+                    "Must be greater than 0 (decimals allowed).",
                 setter = this::setLitersPerMin,
                 current = this.litersPerMin
             )
@@ -130,16 +130,59 @@ class SimpleAction(name: String, val description: String? = null) : Task(name)
 class HeatWater(
     name: String,
     val use: For = For.MASH,
-    val heatingPower: Int = 1000 // Power available from the heat source
+    var heatingPower: Int = 2000 // Power available from the heat source
 ) : Task(name) {
 
     enum class For {
         MASH,
         SPARGE
     }
+
+    fun setHeatingPower(heatingPower: Int): Boolean {
+        this.heatingPower = heatingPower
+        return true
+    }
+
+    override fun getTaskParameters(): List<ProcessParameter<*>> {
+        return listOf(
+            ProcessParameter(
+                name = "power when heating water for ${use.name.lowercase()}",
+                prompt = "Define the actual heating power available when heating water for ${use.name.lowercase()}",
+                description = "The actual heating power (in Watts) that is actually transmitted to the wort during boil.\n" +
+                    "This is not the power of the heating source as it should account for efficiency.\n" +
+                    "When heating 'l' litters of water from 'T1'° to 'T2'° in 't' seconds, the actual heating power is calculated as:\n" +
+                    "  (4185 x (T2 - T1) x l) / t.\n" +
+                    "Must be greater than 0 (no decimals).",
+                setter = this::setHeatingPower,
+                current = this.heatingPower
+            )
+        )
+    }
 }
 
 class Chill(
     name: String? = null,
-    val chillingPower: Int
-) : Task(name = name ?: CHILL)
+    var chillingPower: Int = 500
+) : Task(name = name ?: CHILL) {
+
+    fun setChillingPower(chillingPower: Int): Boolean {
+        this.chillingPower = chillingPower
+        return true
+    }
+
+    override fun getTaskParameters(): List<ProcessParameter<*>> {
+        return listOf(
+            ProcessParameter(
+                name = "heating power for boil",
+                prompt = "Define the actual chilling power",
+                description = "The actual heating power (in Watts) that is actually transmitted to the wort during boil.\n" +
+                    "This is not the power of the heating source as it should account for efficiency.\n" +
+                    "When heating 'l' litters of water from 'T1'° to 'T2'° in 't' seconds, the actual heating power is calculated as:\n" +
+                    "  (4185 x (T2 - T1) x l) / t.\n" +
+                    "Must be greater than 0 (no decimals).",
+                setter = this::setChillingPower,
+                current = this.chillingPower
+            )
+        )
+    }
+}

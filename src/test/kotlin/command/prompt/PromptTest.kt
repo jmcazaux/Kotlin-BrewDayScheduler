@@ -275,9 +275,6 @@ internal class PromptTest {
             default = 4
         )
 
-        val expectedQuestion =
-            "QuestionToTheUser [" + Prompt.Style.BOLD.code + "4" + Prompt.Style.RESET.code + "]: "
-
         withTextFromSystemIn("16").execute {
             assertEquals(16, prompt.prompt(), "Prompt<Int> should return 16 when 16 is entered on the command line")
         }
@@ -291,9 +288,6 @@ internal class PromptTest {
             question = "QuestionToTheUser",
             default = 4
         )
-
-        val expectedQuestion =
-            "QuestionToTheUser [" + Prompt.Style.BOLD.code + "4" + Prompt.Style.RESET.code + "]: "
 
         withTextFromSystemIn("").execute {
             assertEquals(

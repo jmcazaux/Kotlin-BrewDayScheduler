@@ -13,16 +13,16 @@ class DefaultProcesses {
                 heatWater {
                     name = "Heat Mash Water"
                     use = HeatWater.For.MASH
-                    heatingPower = 500
+                    heatingPower = 2000
                 },
                 mash {},
                 heatWater {
                     name = "Heat Sparge Water"
                     use = HeatWater.For.MASH
-                    heatingPower = 500
+                    heatingPower = 2000
                 },
                 lauter { litersPerMin = 1.0 },
-                boil { heatingPower = 1000 },
+                boil { heatingPower = 2000 },
                 action {
                     name = "Sanitize Chiller"
                     description = "Sanitize Chiller in/with boiling wort"
