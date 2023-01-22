@@ -57,11 +57,13 @@ class DependencyBuilder {
     }
 }
 
-fun mash(mash: MashBuilder.() -> Unit): Mash = MashBuilder().apply(mash).build()
+fun mash(mash: TaskBuilder.() -> Unit): Mash = MashBuilder().apply(mash).build()
 
 fun boil(boil: TaskBuilder.() -> Unit): Boil = BoilBuilder().apply(boil).build()
 
 fun lauter(lauter: TaskBuilder.() -> Unit): Lauter = LauterBuilder().apply(lauter).build()
+
+fun drainMash(drainMash: TaskBuilder.() -> Unit): DrainMash = DrainMashBuilder().apply(drainMash).build()
 
 fun action(action: TaskBuilder.() -> Unit): SimpleAction = SimpleActionBuilder().apply(action).build()
 

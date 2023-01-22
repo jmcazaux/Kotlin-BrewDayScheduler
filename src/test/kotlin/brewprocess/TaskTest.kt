@@ -57,7 +57,8 @@ internal class TaskTest {
                     true,
                     "Define the actual chilling power"
                 ),
-                arguments("simple action", SimpleAction(name = "a_simple_action"), false, null)
+                arguments("simple action", SimpleAction(name = "a_simple_action"), false, null),
+                arguments("drain the mash", DrainMash(), true, "Duration to drain the mash (in minutes)")
             )
         }
     }

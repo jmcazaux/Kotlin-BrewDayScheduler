@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
         Type(value = HeatWater::class, name = Task.HEAT_WATER),
         Type(value = Mash::class, name = Task.MASH),
         Type(value = Lauter::class, name = Task.LAUTER),
+        Type(value = DrainMash::class, name = Task.DRAIN_MASH),
         Type(value = Boil::class, name = Task.BOIL),
         Type(value = SimpleAction::class, name = Task.ACTION),
         Type(value = Chill::class, name = Task.CHILL)
@@ -26,6 +27,7 @@ sealed class Task(val name: String) {
         const val HEAT_WATER = "heat_water"
         const val MASH = "mash"
         const val LAUTER = "lauter"
+        const val DRAIN_MASH = "drain_mash"
         const val BOIL = "boil"
         const val ACTION = "action"
         const val CHILL = "chill"
@@ -125,6 +127,32 @@ class Lauter(
     }
 }
 
+class DrainMash(
+    name: String? = DRAIN_MASH,
+    var duration: Int = 30 // When using BIAB or other single vessel process, the time it takes to drain the mash
+) : Task(name ?: LAUTER) {
+
+    fun setDuration(duration: Int): Boolean {
+        this.duration = duration
+        return true
+    }
+
+    override fun getTaskParameters(): List<ProcessParameter<*>> {
+        return listOf(
+            ProcessParameter(
+                type = ProcessParameterType.DOUBLE,
+                name = "duration of the mash drain",
+                prompt = "Duration to drain the mash (in minutes)",
+                description = "When using BIAB or other single vessel process, this will define the time you will " +
+                    "time it takes to drain the mash before the boil stage.\n" +
+                    "Must be greater than 0 (in minutes, no decimals).",
+                setter = this::setDuration,
+                current = this.duration
+            )
+        )
+    }
+}
+
 class SimpleAction(name: String, val description: String? = null) : Task(name)
 
 class HeatWater(
@@ -148,7 +176,7 @@ class HeatWater(
             ProcessParameter(
                 name = "power when heating water for ${use.name.lowercase()}",
                 prompt = "Define the actual heating power available when heating water for ${use.name.lowercase()}",
-                description = "The actual heating power (in Watts) that is actually transmitted to the wort during boil.\n" +
+                description = "The actual heating power (in Watts) that is actually transmitted to the water when heating (for mash or for sparge).\n" +
                     "This is not the power of the heating source as it should account for efficiency.\n" +
                     "When heating 'l' litters of water from 'T1'° to 'T2'° in 't' seconds, the actual heating power is calculated as:\n" +
                     "  (4185 x (T2 - T1) x l) / t.\n" +
@@ -175,9 +203,9 @@ class Chill(
             ProcessParameter(
                 name = "heating power for boil",
                 prompt = "Define the actual chilling power",
-                description = "The actual heating power (in Watts) that is actually transmitted to the wort during boil.\n" +
-                    "This is not the power of the heating source as it should account for efficiency.\n" +
-                    "When heating 'l' litters of water from 'T1'° to 'T2'° in 't' seconds, the actual heating power is calculated as:\n" +
+                description = "The actual chilling capability (in Watts) that is actually available to cool the wort after boil.\n" +
+                    "This can be calculated with the method below.\n" +
+                    "When cooling 'l' litters of water from 'T1'° down to 'T2'° in 't' seconds, the cooling capability is calculated as:\n" +
                     "  (4185 x (T2 - T1) x l) / t.\n" +
                     "Must be greater than 0 (no decimals).",
                 setter = this::setChillingPower,

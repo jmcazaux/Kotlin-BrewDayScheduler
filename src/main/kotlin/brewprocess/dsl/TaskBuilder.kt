@@ -3,16 +3,15 @@ package brewprocess.dsl
 import brewprocess.*
 import kotlin.reflect.KClass
 
-
 sealed class TaskBuilder {
     // All possible variables
     var name: String? = null
     var description: String? = null
+    var duration: Int? = null
     var heatingPower: Int? = null
     var chillingPower: Int? = null
     var litersPerMin: Double? = null
     var use: HeatWater.For? = null
-
 
     fun <T : Task> build(taskClass: KClass<T>): Task {
         return when (taskClass) {
@@ -26,6 +25,11 @@ sealed class TaskBuilder {
             Lauter::class -> Lauter(
                 name = name,
                 litersPerMin = litersPerMin ?: throw IllegalArgumentException("litersPerMin must be defined")
+            )
+
+            DrainMash::class -> DrainMash(
+                name = name,
+                duration = duration ?: throw IllegalArgumentException("duration must be defined")
             )
 
             SimpleAction::class -> SimpleAction(
@@ -61,6 +65,10 @@ class LauterBuilder : TaskBuilder() {
     fun build(): Lauter = super.build(Lauter::class) as Lauter
 }
 
+class DrainMashBuilder : TaskBuilder() {
+    fun build(): DrainMash = super.build(DrainMash::class) as DrainMash
+}
+
 class SimpleActionBuilder : TaskBuilder() {
     fun build(): SimpleAction = super.build(SimpleAction::class) as SimpleAction
 }
@@ -72,4 +80,3 @@ class HeatWaterBuilder : TaskBuilder() {
 class ChillBuilder : TaskBuilder() {
     fun build(): Chill = super.build(Chill::class) as Chill
 }
-

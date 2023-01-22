@@ -51,6 +51,23 @@ internal class BrewProcessBuilderTest {
     }
 
     @Test
+    fun canBuildDrainMash() {
+        val drainMash = drainMash {
+            name = "setName"
+            duration = 20
+        }
+        assertEquals(DrainMash::class, drainMash::class)
+        assertEquals("setName", drainMash.name)
+        assertEquals(20, drainMash.duration)
+
+        // Test assertions are thrown when not providing litersPerMin
+        val thrown = assertThrows<IllegalArgumentException> {
+            drainMash {}
+        }
+        assertEquals(thrown.message, "duration must be defined")
+    }
+
+    @Test
     fun canBuildAction() {
         val action = action {
             name = "anAction"
