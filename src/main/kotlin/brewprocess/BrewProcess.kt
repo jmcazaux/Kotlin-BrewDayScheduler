@@ -48,6 +48,11 @@ class BrewProcess(
         tasks[task.name] = task
     }
 
+    val parameters: List<ProcessParameter<*>>
+        get() {
+            return this.tasks.values.map { it.getTaskParameters() }.flatten()
+        }
+
     fun writeToFile(file: File) {
         val mapper = jacksonObjectMapper()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)

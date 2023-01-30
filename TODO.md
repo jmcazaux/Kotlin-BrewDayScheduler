@@ -1,6 +1,6 @@
 ### Prompt
 
-- Add `unit` to `Prompt` (or not)
+~~- Add `unit` to `Prompt` (or not)~~
 
 ### ConfigCommand
 

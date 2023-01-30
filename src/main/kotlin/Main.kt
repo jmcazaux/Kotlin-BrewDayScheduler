@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
         valueType = Boolean::class,
         question = "Would you like to define your brew process now?",
         help = "Defining the parameters of your brew process is necessary to plan your brew schedule accurately.\n" +
-            "It id just a few questions about your equipment and process.",
+            "We will just ask you a few questions about your equipment and process.",
         default = true
     )
 

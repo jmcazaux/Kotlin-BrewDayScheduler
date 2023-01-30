@@ -1,10 +1,13 @@
 package command.config
 
 import brewprocess.BrewProcess
+import brewprocess.ProcessParameter
+import brewprocess.ProcessParameterType
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import command.prompt.Prompt
 import picocli.CommandLine
 import picocli.CommandLine.ExitCode
 import java.io.File
@@ -58,7 +61,42 @@ class ConfigCommand(private val configFile: File) : Callable<Int> {
     }
 
     fun setUpAndSaveConfig(): Int {
-        TODO("Not yet implemented")
+        val currentProcess = AppConfig.process
+
+        for (processParameter: ProcessParameter<*> in currentProcess.parameters) {
+            when (processParameter.type) {
+                ProcessParameterType.INT -> {
+                    val processParameter = processParameter as ProcessParameter<Int>
+                    val newValue = Prompt(
+                        valueName = processParameter.name,
+                        question = processParameter.prompt,
+                        help = processParameter.description,
+                        default = processParameter.current as Int,
+                        valueType = Int::class
+                    ).prompt()
+
+                    if (newValue != null) {
+                        processParameter.setter(newValue)
+                    }
+                }
+
+                ProcessParameterType.DOUBLE -> {
+                    val processParameter = processParameter as ProcessParameter<Double>
+                    val newValue = Prompt(
+                        valueName = processParameter.name,
+                        question = processParameter.prompt,
+                        help = processParameter.description,
+                        default = processParameter.current as Double,
+                        valueType = Double::class
+                    ).prompt()
+
+                    if (newValue != null) {
+                        processParameter.setter(newValue)
+                    }
+                }
+            }
+        }
+        return 0
     }
 
     fun listConfig() {

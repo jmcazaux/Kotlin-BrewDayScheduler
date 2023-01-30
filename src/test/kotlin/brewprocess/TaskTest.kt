@@ -27,7 +27,7 @@ internal class TaskTest {
         }
 
         Assertions.assertTrue(
-            task.getTaskParameters()[0].prompt.startsWith(expectedPrompt!!),
+            task.getTaskParameters()[0].prompt.startsWith(expectedPrompt ?: return),
             "Prompt for task ${task.name} should start with \"$expectedPrompt\""
         )
     }
@@ -55,7 +55,7 @@ internal class TaskTest {
                     "chill",
                     Chill(),
                     true,
-                    "Define the actual chilling power"
+                    "Define the actual chilling capability"
                 ),
                 arguments("simple action", SimpleAction(name = "a_simple_action"), false, null),
                 arguments("drain the mash", DrainMash(), true, "Duration to drain the mash (in minutes)")
