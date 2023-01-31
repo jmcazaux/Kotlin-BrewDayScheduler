@@ -1,5 +1,6 @@
 package brewprocess
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -48,13 +49,13 @@ class BrewProcess(
         tasks[task.name] = task
     }
 
-    val parameters: List<ProcessParameter<*>>
-        get() {
-            return this.tasks.values
-                .sortedBy { it.order }
-                .map { it.getTaskParameters() }
-                .flatten()
-        }
+    @JsonIgnore
+    fun getParameters(): List<ProcessParameter<*>> {
+        return this.tasks.values
+            .sortedBy { it.order }
+            .map { it.getTaskParameters() }
+            .flatten()
+    }
 
     fun writeToFile(file: File) {
         val mapper = jacksonObjectMapper()

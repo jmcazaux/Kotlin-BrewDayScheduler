@@ -7,6 +7,11 @@ import java.io.File
 
 fun main(args: Array<String>) {
     val userHomeDir = System.getProperty("user.home")
+    val configDir = File(userHomeDir + AppConstants.APP_DIRECTORY)
+
+    if (!configDir.exists()) {
+        configDir.mkdirs()
+    }
     val configFilePath = userHomeDir + AppConstants.CONFIG_FILE_REL_PATH
     val configFile = File(configFilePath)
 

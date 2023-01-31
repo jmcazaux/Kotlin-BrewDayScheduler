@@ -5,6 +5,7 @@ import brewprocess.ProcessParameter
 import brewprocess.ProcessParameterType
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import command.prompt.Prompt
@@ -63,7 +64,7 @@ class ConfigCommand(private val configFile: File) : Callable<Int> {
     fun setUpAndSaveConfig(): Int {
         val currentProcess = AppConfig.process
 
-        for (processParameter: ProcessParameter<*> in currentProcess.parameters) {
+        for (processParameter: ProcessParameter<*> in currentProcess.getParameters()) {
             when (processParameter.type) {
                 ProcessParameterType.INT -> {
                     val processParameter = processParameter as ProcessParameter<Int>
@@ -95,7 +96,12 @@ class ConfigCommand(private val configFile: File) : Callable<Int> {
                     }
                 }
             }
+            println()
         }
+
+        AppConfig.isDefault = false
+        AppConfig.process = currentProcess
+        saveConfigToFile()
         return 0
     }
 
@@ -107,5 +113,12 @@ class ConfigCommand(private val configFile: File) : Callable<Int> {
         val mapper = jacksonObjectMapper()
         val config = mapper.readValue<JsonNode>(this.configFile.readText())
         AppConfig.process = mapper.treeToValue(config["process"], BrewProcess::class.java)
+    }
+
+    private fun saveConfigToFile() {
+        val mapper = jacksonObjectMapper()
+            .enable(SerializationFeature.INDENT_OUTPUT)
+
+        mapper.writeValue(this.configFile, AppConfig.process)
     }
 }
