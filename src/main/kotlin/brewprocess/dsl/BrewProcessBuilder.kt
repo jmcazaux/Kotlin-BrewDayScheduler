@@ -14,7 +14,10 @@ class BrewProcessBuilder {
             description
         )
 
+        var order = 0
         for (task in tasks) {
+            task.order = order
+            order += 1
             brewProcess.addTask(task)
         }
 

@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
         Type(value = Chill::class, name = Task.CHILL)
     ]
 )
-sealed class Task(val name: String) {
+sealed class Task(val name: String, var order: Int? = null) {
 
     companion object {
         const val HEAT_WATER = "heat_water"

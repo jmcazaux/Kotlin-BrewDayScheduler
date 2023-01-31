@@ -29,7 +29,7 @@ class Prompt<T : Comparable<T>>(
         var value: T? = null
 
         while (value == null) {
-            print(getFullPrompt())
+            print(buildFullPrompt())
 
             val input = readln()
 
@@ -45,14 +45,14 @@ class Prompt<T : Comparable<T>>(
             value = extractValue(input)
 
             if (value == null) {
-                println(getInvalidValueMessage(input))
+                println(buildInvalidValueMessage(input))
                 continue
             }
 
             val valueIsBelowMin = min != null && value < min
             val valueIsAboveMax = max != null && value > max
             if (valueIsBelowMin || valueIsAboveMax) {
-                println(getOutOfBoundariesMessage(input))
+                println(buildOutOfBoundariesMessage(input))
                 value = null
                 continue
             }
@@ -61,11 +61,23 @@ class Prompt<T : Comparable<T>>(
         return value
     }
 
-    private fun getInvalidValueMessage(input: String): String {
+    private fun buildFullPrompt(): String {
+        var fullPrompt = "$question [" + "$default".bold + "]"
+
+        if (help != null) {
+            fullPrompt += " ('${"?".italic}' for help)"
+        }
+
+        fullPrompt += ": "
+
+        return fullPrompt
+    }
+
+    private fun buildInvalidValueMessage(input: String): String {
         return "Please provide a '${valueType.simpleName?.lowercase()}'. '$input' is not a valid value."
     }
 
-    private fun getOutOfBoundariesMessage(value: String): String {
+    private fun buildOutOfBoundariesMessage(value: String): String {
         return when {
             min != null && max != null -> "Value for $valueName must be between '$min' and '$max' (unlike '$value')."
             min != null -> "Value for $valueName must be greater than '$min' (unlike '$value')."
@@ -101,18 +113,6 @@ class Prompt<T : Comparable<T>>(
         }
 
         return null
-    }
-
-    private fun getFullPrompt(): String {
-        var fullPrompt = "$question [" + "$default".bold + "]"
-
-        if (help != null) {
-            fullPrompt += " ('${"?".italic}' for help)"
-        }
-
-        fullPrompt += ": "
-
-        return fullPrompt
     }
 
     /*

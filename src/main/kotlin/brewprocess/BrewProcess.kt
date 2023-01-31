@@ -50,7 +50,10 @@ class BrewProcess(
 
     val parameters: List<ProcessParameter<*>>
         get() {
-            return this.tasks.values.map { it.getTaskParameters() }.flatten()
+            return this.tasks.values
+                .sortedBy { it.order }
+                .map { it.getTaskParameters() }
+                .flatten()
         }
 
     fun writeToFile(file: File) {
