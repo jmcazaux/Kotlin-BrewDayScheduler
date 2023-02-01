@@ -18,7 +18,6 @@ import kotlin.properties.Delegates
 @JsonIgnoreProperties(value = ["isDefault"])
 object AppConfig {
     var process by Delegates.notNull<BrewProcess>()
-
     var isDefault by Delegates.notNull<Boolean>() // Whether this configuration is a default one or it has been set by the user
 }
 
@@ -62,37 +61,39 @@ class ConfigCommand(private val configFile: File) : Callable<Int> {
     }
 
     fun setUpAndSaveConfig(): Int {
-        val currentProcess = AppConfig.process
+        val selectedProcess = selectBaseProcess(default = AppConfig.process)
 
-        for (processParameter: ProcessParameter<*> in currentProcess.getParameters()) {
+        for (processParameter: ProcessParameter<*> in selectedProcess.getParameters()) {
             when (processParameter.type) {
                 ProcessParameterType.INT -> {
-                    val processParameter = processParameter as ProcessParameter<Int>
+                    val parameter = processParameter as ProcessParameter<Int>
                     val newValue = Prompt(
-                        valueName = processParameter.name,
-                        question = processParameter.prompt,
-                        help = processParameter.description,
-                        default = processParameter.current as Int,
-                        valueType = Int::class
+                        valueName = parameter.name,
+                        question = parameter.prompt,
+                        help = parameter.description,
+                        default = parameter.current as Int,
+                        valueType = Int::class,
+                        min = 0 // TODO: Should rather be an attribute of the ProcessParameter
                     ).prompt()
 
                     if (newValue != null) {
-                        processParameter.setter(newValue)
+                        parameter.setter(newValue)
                     }
                 }
 
                 ProcessParameterType.DOUBLE -> {
-                    val processParameter = processParameter as ProcessParameter<Double>
+                    val parameter = processParameter as ProcessParameter<Double>
                     val newValue = Prompt(
-                        valueName = processParameter.name,
-                        question = processParameter.prompt,
-                        help = processParameter.description,
-                        default = processParameter.current as Double,
-                        valueType = Double::class
+                        valueName = parameter.name,
+                        question = parameter.prompt,
+                        help = parameter.description,
+                        default = parameter.current as Double,
+                        valueType = Double::class,
+                        min = 0.0 // TODO: Should rather be an attribute of the ProcessParameter
                     ).prompt()
 
                     if (newValue != null) {
-                        processParameter.setter(newValue)
+                        parameter.setter(newValue)
                     }
                 }
             }
@@ -100,9 +101,61 @@ class ConfigCommand(private val configFile: File) : Callable<Int> {
         }
 
         AppConfig.isDefault = false
-        AppConfig.process = currentProcess
+        AppConfig.process = selectedProcess
         saveConfigToFile()
         return 0
+    }
+
+    private fun selectBaseProcess(default: BrewProcess): BrewProcess {
+        val allProcesses = DefaultProcesses.all().sortedBy { it.name }
+
+        var selected: Int? = null
+        while (selected == null) {
+            promptForDefaultBaseProcess(allProcesses, default)
+
+            val input = readln()
+
+            if (input.isEmpty()) {
+                return default
+            }
+
+            try {
+                selected = input.toInt()
+            } catch (_: Exception) {
+                println("Please enter a valid number between 1 and ${allProcesses.size}.")
+                continue
+            }
+
+            if (selected < 1 || selected > allProcesses.size) {
+                println("Please enter a valid number between 1 and ${allProcesses.size}.")
+                continue
+            }
+        }
+
+        return allProcesses[selected - 1]
+    }
+
+    private fun promptForDefaultBaseProcess(
+        processes: List<BrewProcess>,
+        default: BrewProcess
+    ) {
+        val defaultIndex = processes.indexOfFirst { it.name == default.name } + 1
+
+        println(
+            "Please select your process in the list below (current process is " +
+                "${Prompt.Style.BOLD.code}\"${default.name}\"${Prompt.Style.RESET.code}):"
+        )
+        var idx = 1
+        for (process: BrewProcess in processes) {
+            println("  - $idx: ${process.name} ${if (idx == defaultIndex) "(*)" else ""}")
+
+            idx++
+        }
+        println()
+        println(
+            "Please type ${(1..processes.size).joinToString(separator = ",")} or " +
+                "${Prompt.Style.ITALIC.code}'enter'${Prompt.Style.RESET.code} to keep the current process:"
+        )
     }
 
     fun listConfig() {
