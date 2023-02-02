@@ -186,7 +186,7 @@ class DrainMash(
     override fun getTaskParameters(): List<ProcessParameter<*>> {
         val parameters: MutableList<ProcessParameter<*>> = mutableListOf(
             ProcessParameter(
-                type = ProcessParameterType.DOUBLE,
+                type = ProcessParameterType.INT,
                 name = "duration of the mash drain",
                 prompt = "Duration to drain the mash (in minutes)",
                 description = "When using BIAB or other single vessel process, this will define the time you will " +

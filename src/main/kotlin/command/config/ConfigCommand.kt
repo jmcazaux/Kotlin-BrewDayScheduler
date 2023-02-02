@@ -15,7 +15,7 @@ import java.io.File
 import java.util.concurrent.Callable
 import kotlin.properties.Delegates
 
-@JsonIgnoreProperties(value = ["isDefault"])
+@JsonIgnoreProperties(value = ["default"])
 object AppConfig {
     var process by Delegates.notNull<BrewProcess>()
     var isDefault by Delegates.notNull<Boolean>() // Whether this configuration is a default one or it has been set by the user
@@ -29,7 +29,7 @@ object AppConfig {
 class ConfigCommand(private val configFile: File) : Callable<Int> {
 
     init {
-        AppConfig.process = DefaultProcesses.THREE_VESSELS
+        AppConfig.process = DefaultProcesses.defaultProcess
         AppConfig.isDefault = true
 
         if (configFile.exists() && configFile.length() > 0) {
@@ -103,7 +103,7 @@ class ConfigCommand(private val configFile: File) : Callable<Int> {
         AppConfig.isDefault = false
         AppConfig.process = selectedProcess
         saveConfigToFile()
-        return 0
+        return ExitCode.OK
     }
 
     private fun selectBaseProcess(default: BrewProcess): BrewProcess {
@@ -147,13 +147,17 @@ class ConfigCommand(private val configFile: File) : Callable<Int> {
         )
         var idx = 1
         for (process: BrewProcess in processes) {
-            println("  - $idx: ${process.name} ${if (idx == defaultIndex) "(*)" else ""}")
-
+            val formattedName =
+                if (idx == defaultIndex) {
+                    "${Prompt.Style.BOLD.code}${process.name}${Prompt.Style.RESET.code}"
+                } else {
+                    process.name
+                }
+            println("  - $idx > $formattedName")
             idx++
         }
-        println()
         println(
-            "Please type ${(1..processes.size).joinToString(separator = ",")} or " +
+            "\nPlease type ${(1..processes.size).joinToString(separator = ", ")} or " +
                 "${Prompt.Style.ITALIC.code}'enter'${Prompt.Style.RESET.code} to keep the current process:"
         )
     }
@@ -172,6 +176,6 @@ class ConfigCommand(private val configFile: File) : Callable<Int> {
         val mapper = jacksonObjectMapper()
             .enable(SerializationFeature.INDENT_OUTPUT)
 
-        mapper.writeValue(this.configFile, AppConfig.process)
+        mapper.writeValue(this.configFile, AppConfig)
     }
 }

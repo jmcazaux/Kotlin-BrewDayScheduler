@@ -141,5 +141,8 @@ class DefaultProcesses {
         fun getByName(name: String): BrewProcess? {
             return all().find { it.name == name }
         }
+
+        val defaultProcess: BrewProcess
+            get() = THREE_VESSELS
     }
 }
