@@ -1,5 +1,6 @@
 package command.config
 
+import TestHelper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -8,8 +9,7 @@ internal class ConfigCommandTest {
 
     @Test
     fun initWithFileIsNotDefaultConfig() {
-        val sampleFile = File(this.javaClass.classLoader.getResource("sample_config.json").file)
-        ConfigCommand(sampleFile)
+        ConfigCommand(TestHelper.TEST_BDS_DIRECTORY)
 
         Assertions.assertFalse(AppConfig.isDefault, "AppConfig with existing config file should not be default")
 

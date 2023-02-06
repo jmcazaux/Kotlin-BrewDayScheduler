@@ -1,5 +1,6 @@
 package command.config
 
+import AppConstants
 import brewprocess.BrewProcess
 import brewprocess.ProcessParameter
 import brewprocess.ProcessParameterType
@@ -26,7 +27,9 @@ object AppConfig {
     mixinStandardHelpOptions = true,
     description = ["Configure brew day scheduler according to your process"]
 )
-class ConfigCommand(private val configFile: File) : Callable<Int> {
+class ConfigCommand(bdsDirectory: File) : Callable<Int> {
+
+    private val configFile = File(bdsDirectory, AppConstants.CONFIG_FILE_NAME)
 
     init {
         AppConfig.process = DefaultProcesses.defaultProcess
