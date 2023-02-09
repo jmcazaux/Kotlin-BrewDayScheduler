@@ -42,16 +42,11 @@ internal class MainKtTest {
         val spiedCommand = spy(configCommand)
         doReturn(CommandLine.ExitCode.OK).`when`(spiedCommand).setUpAndSaveConfig()
 
-        val app = BdsApp(arrayOf(spiedCommand))
-
         restoreSystemProperties {
             System.setProperty("user.home", TEST_EMPTY_DIRECTORY.absolutePath)
 
-            val userInputs = mutableListOf("")
-            userInputs.addAll((0..30).map { "" })
-            val inputs = userInputs.toTypedArray()
-
-            withTextFromSystemIn(*inputs).execute {
+            withTextFromSystemIn("").execute {
+                val app = BdsApp(arrayOf(spiedCommand))
                 val question = SystemLambda.tapSystemOutNormalized {
                     app.run(args = emptyArray())
                 }
