@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
+import kotlin.test.assertEquals
 
 internal class TaskTest {
 
@@ -61,5 +62,57 @@ internal class TaskTest {
                 arguments("drain the mash", DrainMash(), true, "Duration to drain the mash (in minutes)")
             )
         }
+
+        @JvmStatic
+        fun argumentsForDependencyParameterTests(): Stream<Arguments> {
+            return Stream.of(
+                arguments(
+                    DependencyType.STARTS_AFTER_END,
+                    "delay to start \"dependant_task\"",
+                    "How long after the end of \"main_task\" will you start \"dependant_task\" (in mn)"
+                ),
+                arguments(
+                    DependencyType.STARTS_AFTER_START,
+                    "delay to start \"dependant_task\"",
+                    "How long after the beginning of \"main_task\" will you start \"dependant_task\" (in mn)"
+                ),
+                arguments(
+                    DependencyType.STARTS_BEFORE_END,
+                    "delay to start \"dependant_task\"",
+                    "How long before the end of \"main_task\" will you start \"dependant_task\" (in mn)"
+                ),
+                arguments(
+                    DependencyType.FINISH_BEFORE_END,
+                    "delay to finish \"dependant_task\"",
+                    "How long before the end of \"main_task\" will you finish \"dependant_task\" (in mn)"
+                )
+            )
+        }
+    }
+
+    @ParameterizedTest(name = "{index}: dependency \"{0}\" should have parameter -> {1} - {2}")
+    @MethodSource("argumentsForDependencyParameterTests")
+    fun testTasksParametersIncludeDependency(
+        dependencyType: DependencyType,
+        expectedParameterName: String,
+        expectedPrompt: String
+    ) {
+        val testProcess = BrewProcess("test_process")
+        testProcess.addTask(
+            SimpleAction(name = "main_task")
+        )
+        testProcess.addTask(
+            task = SimpleAction("dependant_task"),
+            relativeTo = "main_task",
+            constraint = dependencyType
+        )
+
+        val parameters = testProcess.getParameters()
+
+        assertEquals(1, parameters.size)
+        val parameter = parameters[0]
+
+        assertEquals(expectedParameterName, parameter.name)
+        assertEquals(expectedPrompt, parameter.prompt)
     }
 }
