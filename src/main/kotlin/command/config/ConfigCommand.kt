@@ -76,7 +76,8 @@ class ConfigCommand(bdsDirectory: File) : Callable<Int> {
                         help = parameter.description,
                         default = parameter.current as Int,
                         valueType = Int::class,
-                        min = 0 // TODO: Should rather be an attribute of the ProcessParameter
+                        min = parameter.min,
+                        max = parameter.max
                     ).prompt()
 
                     if (newValue != null) {
@@ -92,7 +93,8 @@ class ConfigCommand(bdsDirectory: File) : Callable<Int> {
                         help = parameter.description,
                         default = parameter.current as Double,
                         valueType = Double::class,
-                        min = 0.0 // TODO: Should rather be an attribute of the ProcessParameter
+                        min = parameter.min,
+                        max = parameter.max
                     ).prompt()
 
                     if (newValue != null) {
