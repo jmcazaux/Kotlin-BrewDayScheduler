@@ -1,5 +1,6 @@
 {
-  "name": "test",
+  "name": "test process name",
+  "description": "test process description",
   "tasks": {
     "mash": {
       "name": "mash",
@@ -12,6 +13,10 @@
     "lauter": {
       "name": "lauter",
       "type": "lauter"
+    },
+    "chill": {
+      "name": "chill",
+      "type": "chill"
     }
   },
   "dependencies": [
@@ -24,6 +29,12 @@
     {
       "fromTask": "lauter",
       "toTask": "boil",
+      "type": "STARTS_AFTER_END",
+      "delay": 0
+    },
+    {
+      "fromTask": "boil",
+      "toTask": "chill",
       "type": "STARTS_AFTER_END",
       "delay": 0
     }

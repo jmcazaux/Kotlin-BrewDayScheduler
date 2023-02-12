@@ -21,6 +21,7 @@
 
 # Build artefacts
 build/
+out/
 
 # Gradle cache
 .gradle

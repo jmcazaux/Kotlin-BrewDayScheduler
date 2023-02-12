@@ -12,6 +12,9 @@ import java.util.concurrent.Callable
 )
 class BrewDayScheduler : Callable<Int> {
 
+    @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = ["display a help message"])
+    private var helpRequested: Boolean = false;
+
     override fun call(): Int {
         println(CommandLine.Help.Ansi.AUTO.string("@|bold,green,underline Brew Day Scheduler: all systems going...|@"))
         println(CommandLine.Help.Ansi.AUTO.string("@|yellow Brew Day Scheduler: all done...|@"))

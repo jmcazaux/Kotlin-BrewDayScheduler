@@ -1,30 +1,30 @@
 package brewprocess.dsl
 
 import brewprocess.*
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import kotlin.test.assertEquals
 
 internal class BrewProcessBuilderTest {
 
     @Test
-    fun testMash() {
+    fun canBuildMash() {
         val mash = mash {}
-        Assertions.assertEquals(Mash::class, mash::class)
-        Assertions.assertEquals(Task.MASH, mash.name)
+        assertEquals(Mash::class, mash::class)
+        assertEquals(Task.MASH, mash.name)
     }
 
     @Test
-    fun testBoil() {
+    fun canBuildBoil() {
         val boil = boil {
             name = "setName"
             heatingPower = 10
         }
 
-        Assertions.assertEquals(Boil::class, boil::class)
-        Assertions.assertEquals("setName", boil.name)
-        Assertions.assertEquals(10, boil.heatingPower)
+        assertEquals(Boil::class, boil::class)
+        assertEquals("setName", boil.name)
+        assertEquals(10, boil.heatingPower)
 
         // Test assertions are thrown when not providing heatingPower
         val thrown = assertThrows<IllegalArgumentException> {
@@ -34,14 +34,14 @@ internal class BrewProcessBuilderTest {
     }
 
     @Test
-    fun testLauter() {
+    fun canBuildLauter() {
         val lauter = lauter {
             name = "setName"
             litersPerMin = 0.3
         }
-        Assertions.assertEquals(Lauter::class, lauter::class)
-        Assertions.assertEquals("setName", lauter.name)
-        Assertions.assertEquals(0.3, lauter.litersPerMin)
+        assertEquals(Lauter::class, lauter::class)
+        assertEquals("setName", lauter.name)
+        assertEquals(0.3, lauter.litersPerMin)
 
         // Test assertions are thrown when not providing litersPerMin
         val thrown = assertThrows<IllegalArgumentException> {
@@ -51,15 +51,32 @@ internal class BrewProcessBuilderTest {
     }
 
     @Test
-    fun testAction() {
+    fun canBuildDrainMash() {
+        val drainMash = drainMash {
+            name = "setName"
+            duration = 20
+        }
+        assertEquals(DrainMash::class, drainMash::class)
+        assertEquals("setName", drainMash.name)
+        assertEquals(20, drainMash.duration)
+
+        // Test assertions are thrown when not providing litersPerMin
+        val thrown = assertThrows<IllegalArgumentException> {
+            drainMash {}
+        }
+        assertEquals(thrown.message, "duration must be defined")
+    }
+
+    @Test
+    fun canBuildAction() {
         val action = action {
             name = "anAction"
             description = "aDescription"
         }
 
-        Assertions.assertEquals(SimpleAction::class, action::class)
-        Assertions.assertEquals("anAction", action.name)
-        Assertions.assertEquals("aDescription", action.description)
+        assertEquals(SimpleAction::class, action::class)
+        assertEquals("anAction", action.name)
+        assertEquals("aDescription", action.description)
 
         // Test assertions are thrown when not providing name
         val thrown = assertThrows<IllegalArgumentException> {
@@ -69,17 +86,17 @@ internal class BrewProcessBuilderTest {
     }
 
     @Test
-    fun testHeatWater() {
+    fun canBuildHeatWater() {
         val heatMashWater = heatWater {
             name = "heatMashWater"
             use = HeatWater.For.MASH
             heatingPower = 10
         }
 
-        Assertions.assertEquals(HeatWater::class, heatMashWater::class)
-        Assertions.assertEquals("heatMashWater", heatMashWater.name)
-        Assertions.assertEquals(HeatWater.For.MASH, heatMashWater.use)
-        Assertions.assertEquals(10, heatMashWater.heatingPower)
+        assertEquals(HeatWater::class, heatMashWater::class)
+        assertEquals("heatMashWater", heatMashWater.name)
+        assertEquals(HeatWater.For.MASH, heatMashWater.use)
+        assertEquals(10, heatMashWater.heatingPower)
 
         // Test assertions are thrown when not providing name
         var thrown = assertThrows<IllegalArgumentException> {
@@ -106,24 +123,24 @@ internal class BrewProcessBuilderTest {
     }
 
     @Test
-    fun testChill() {
+    fun canBuildChill() {
         val chill = chill {
             chillingPower = 10
         }
 
-        Assertions.assertEquals(Chill::class, chill::class)
-        Assertions.assertEquals("chill", chill.name)
-        Assertions.assertEquals(10, chill.chillingPower)
+        assertEquals(Chill::class, chill::class)
+        assertEquals("chill", chill.name)
+        assertEquals(10, chill.chillingPower)
 
         // Test assertions are thrown when not providing heatingPower
-        var thrown = assertThrows<IllegalArgumentException> {
+        val thrown = assertThrows<IllegalArgumentException> {
             chill {}
         }
         assertEquals(thrown.message, "chillingPower must be defined")
     }
 
     @Test
-    fun testBrewProcess() {
+    fun canBuildBrewProcess() {
         val thrown = assertThrows<IllegalArgumentException> {
             brewProcess {}
         }
@@ -131,6 +148,7 @@ internal class BrewProcessBuilderTest {
 
         val process = brewProcess {
             name = "threeVessels"
+            description = "process description for 3 vessels"
 
             tasks = listOf(
                 heatWater {
@@ -169,6 +187,7 @@ internal class BrewProcessBuilderTest {
                     toTask = "Sanitize Chiller"
                     type = DependencyType.FINISH_BEFORE_END
                     delay = 600
+                    parametrizedDelay = true
                 },
                 dependency {
                     fromTask = "boil"
@@ -178,23 +197,25 @@ internal class BrewProcessBuilderTest {
             )
         }
 
-        Assertions.assertEquals(BrewProcess::class, process::class)
-        Assertions.assertEquals("threeVessels", process.name)
-        Assertions.assertEquals(6, process.tasks.size)
-        Assertions.assertEquals(5, process.dependencies.size)
+        assertEquals(BrewProcess::class, process::class)
+        assertEquals("threeVessels", process.name)
+        assertEquals("process description for 3 vessels", process.description)
+        assertEquals(6, process.tasks.size)
+        assertEquals(5, process.dependencies.size)
 
         val mash = process.tasks["mash"] as Mash
         val lauter = process.tasks["lauter"] as Lauter
         val sanitizeChiller = process.tasks["Sanitize Chiller"] as SimpleAction
         val boil = process.tasks["boil"] as Boil
 
-        Assertions.assertEquals(1, mash.dependentTasks.size)
-        Assertions.assertEquals(mash.dependentTasks[0].to, lauter)
-        Assertions.assertEquals(mash.dependentTasks[0].type, DependencyType.STARTS_AFTER_END)
+        assertEquals(1, mash.dependentTasks.size)
+        assertEquals(mash.dependentTasks[0].to, lauter)
+        assertEquals(mash.dependentTasks[0].type, DependencyType.STARTS_AFTER_END)
 
-        Assertions.assertEquals(2, boil.dependentTasks.size)
-        Assertions.assertEquals(boil.dependentTasks[0].to, sanitizeChiller)
-        Assertions.assertEquals(boil.dependentTasks[0].type, DependencyType.FINISH_BEFORE_END)
-        Assertions.assertEquals(boil.dependentTasks[0].delay, 600)
+        assertEquals(2, boil.dependentTasks.size)
+        assertEquals(boil.dependentTasks[0].to, sanitizeChiller)
+        assertEquals(boil.dependentTasks[0].type, DependencyType.FINISH_BEFORE_END)
+        assertEquals(boil.dependentTasks[0].delay, 600)
+        assertTrue(boil.dependentTasks[0].parametrizeDelay)
     }
 }

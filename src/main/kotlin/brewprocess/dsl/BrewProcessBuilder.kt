@@ -4,13 +4,20 @@ import brewprocess.*
 
 class BrewProcessBuilder {
     var name: String? = null
+    var description: String? = null
     var tasks: List<Task> = ArrayList()
     var dependencies: List<DependencyRepresentation> = ArrayList()
 
     fun build(): BrewProcess {
-        val brewProcess = BrewProcess(name ?: throw IllegalArgumentException("process name must be defined"))
+        val brewProcess = BrewProcess(
+            name ?: throw IllegalArgumentException("process name must be defined"),
+            description
+        )
 
+        var order = 0
         for (task in tasks) {
+            task.order = order
+            order += 1
             brewProcess.addTask(task)
         }
 
@@ -22,7 +29,8 @@ class BrewProcessBuilder {
                 DependentTask(
                     to,
                     dependency.type,
-                    dependency.delay
+                    dependency.delay,
+                    dependency.parametrizeDelay
                 )
             )
         }
@@ -39,22 +47,26 @@ class DependencyBuilder {
     lateinit var toTask: String
     lateinit var type: DependencyType
     var delay: Int = 0
+    var parametrizedDelay: Boolean = false
 
     fun build(): DependencyRepresentation {
         return DependencyRepresentation(
             fromTask = fromTask,
             toTask = toTask,
             type = type,
-            delay = delay
+            delay = delay,
+            parametrizeDelay = parametrizedDelay
         )
     }
 }
 
-fun mash(mash: MashBuilder.() -> Unit): Mash = MashBuilder().apply(mash).build()
+fun mash(mash: TaskBuilder.() -> Unit): Mash = MashBuilder().apply(mash).build()
 
 fun boil(boil: TaskBuilder.() -> Unit): Boil = BoilBuilder().apply(boil).build()
 
 fun lauter(lauter: TaskBuilder.() -> Unit): Lauter = LauterBuilder().apply(lauter).build()
+
+fun drainMash(drainMash: TaskBuilder.() -> Unit): DrainMash = DrainMashBuilder().apply(drainMash).build()
 
 fun action(action: TaskBuilder.() -> Unit): SimpleAction = SimpleActionBuilder().apply(action).build()
 

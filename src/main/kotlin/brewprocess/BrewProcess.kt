@@ -1,5 +1,6 @@
 package brewprocess
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -12,7 +13,8 @@ import kotlin.reflect.KProperty
  */
 class BrewProcess(
     val name: String,
-    val tasks: MutableMap<String, Task> = HashMap(), // K= task.name, V = task
+    val description: String? = null,
+    val tasks: MutableMap<String, Task> = HashMap() // K= task.name, V = task
 ) {
     // Only used for serialization
     var dependencies: List<DependencyRepresentation> by DependenciesDelegate()
@@ -28,9 +30,10 @@ class BrewProcess(
         task: Task,
         relativeTo: String? = null,
         constraint: DependencyType = DependencyType.STARTS_AFTER_END,
-        delay: Int = 0
-    ) {
+        delay: Int = 0,
+        parametrizeDelay: Boolean = false
 
+    ) {
         if (relativeTo != null) {
             val from = tasks.getValue(relativeTo)
 
@@ -38,11 +41,20 @@ class BrewProcess(
                 DependentTask(
                     to = task,
                     type = constraint,
-                    delay = delay
+                    delay = delay,
+                    parametrizeDelay = parametrizeDelay
                 )
             )
         }
         tasks[task.name] = task
+    }
+
+    @JsonIgnore
+    fun getParameters(): List<ProcessParameter<*>> {
+        return this.tasks.values
+            .sortedBy { it.order }
+            .map { it.getTaskParameters() }
+            .flatten()
     }
 
     fun writeToFile(file: File) {
@@ -85,13 +97,17 @@ private class DependenciesDelegate : ReadWriteProperty<BrewProcess, List<Depende
         property: KProperty<*>,
         value: List<DependencyRepresentation>
     ) {
-
         for (representation in value) {
             val from = thisRef.tasks.getValue(representation.fromTask)
             val to = thisRef.tasks.getValue(representation.toTask)
 
             from.addDependentTask(
-                DependentTask(to = to, type = representation.type, delay = representation.delay)
+                DependentTask(
+                    to = to,
+                    type = representation.type,
+                    delay = representation.delay,
+                    parametrizeDelay = representation.parametrizeDelay
+                )
             )
         }
     }
