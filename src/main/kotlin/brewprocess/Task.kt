@@ -71,7 +71,7 @@ sealed class Task(val name: String, var order: Int? = null) {
         return this.dependentTasks.mapNotNull { parameterForDependantTask(it) }
     }
 
-    private fun parameterForDependantTask(dependantTask: DependentTask): ProcessParameter<*>? {
+    private fun parameterForDependantTask(dependantTask: DependentTask): ProcessParameter<*> {
         val name: String
         val prompt: String
         val description: String? = null
@@ -106,8 +106,10 @@ sealed class Task(val name: String, var order: Int? = null) {
             name = name,
             prompt = prompt,
             description = description,
+            unit = "mn",
             setter = dependantTask::setDelayInMin,
-            current = dependantTask.delayInMin
+            current = dependantTask.delayInMin,
+            min = 0
         )
     }
 }
@@ -134,8 +136,10 @@ class Boil(
                     "When heating 'l' litters of water from 'T1'° to 'T2'° in 't' seconds, the actual heating power " +
                     "is calculated as:\n  (4185 x (T2 - T1) x l) / t.\n" +
                     "Must be greater than 0 (no decimals).",
+                unit = "w",
                 setter = this::setHeatingPower,
-                current = this.heatingPower
+                current = this.heatingPower,
+                min = 0
             )
         )
 
@@ -163,8 +167,10 @@ class Lauter(
                 description = "This will allow to calculate the time you need to lauter your mash.\n" +
                     "It will be derived from the water throughput expressed as liters per minute.\n" +
                     "Must be greater than 0 (decimals allowed).",
+                unit = "l / h",
                 setter = this::setLitersPerMin,
-                current = this.litersPerMin
+                current = this.litersPerMin,
+                min = 0.0
             )
         )
 
@@ -192,8 +198,10 @@ class DrainMash(
                 description = "When using BIAB or other single vessel process, this will define the time you will " +
                     "time it takes to drain the mash before the boil stage.\n" +
                     "Must be greater than 0 (in minutes, no decimals).",
+                unit = "mn",
                 setter = this::setDuration,
-                current = this.duration
+                current = this.duration,
+                min = 0
             )
         )
 
@@ -230,8 +238,10 @@ class HeatWater(
                     "When heating 'l' litters of water from 'T1'° to 'T2'° in 't' seconds, the actual heating power " +
                     "is calculated as:\n  (4185 x (T2 - T1) x l) / t.\n" +
                     "Must be greater than 0 (no decimals).",
+                unit = "w",
                 setter = this::setHeatingPower,
-                current = this.heatingPower
+                current = this.heatingPower,
+                min = 0
             )
         )
 
@@ -260,8 +270,10 @@ class Chill(
                     "When cooling 'l' litters of water from 'T1'° down to 'T2'° in 't' seconds, the cooling capability is calculated as:\n" +
                     "  (4185 x (T2 - T1) x l) / t.\n" +
                     "Must be greater than 0 (no decimals).",
+                unit = "w",
                 setter = this::setChillingPower,
-                current = this.chillingPower
+                current = this.chillingPower,
+                min = 0
             )
         )
 
