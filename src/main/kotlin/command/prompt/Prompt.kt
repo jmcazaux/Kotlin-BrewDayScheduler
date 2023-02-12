@@ -49,8 +49,8 @@ class Prompt<T : Comparable<T>>(
                 continue
             }
 
-            val valueIsBelowMin = min != null && value < min
-            val valueIsAboveMax = max != null && value > max
+            val valueIsBelowMin = (min != null) && (value < min)
+            val valueIsAboveMax = (max != null) && (value > max)
             if (valueIsBelowMin || valueIsAboveMax) {
                 println(buildOutOfBoundariesMessage(input))
                 value = null
@@ -107,7 +107,7 @@ class Prompt<T : Comparable<T>>(
                 when {
                     listOf("y", "yes", "true").contains(input.lowercase()) -> return true as T
                     listOf("n", "no", "false").contains(input.lowercase()) -> return false as T
-                    else -> null
+                    else -> return null
                 }
             }
         }
