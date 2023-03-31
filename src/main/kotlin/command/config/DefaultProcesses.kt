@@ -11,11 +11,12 @@ class DefaultProcesses {
             name = "Two/Three Vessels"
             description =
                 "Three vessels systems are set up with a Hot Liquor Tank, a Mash Tun, and a Boil Kettle.\n" +
-                "The hot liquor tank has the least intuitive name—brewers refer to water as liquor. " +
+                "The hot liquor tank has the least intuitive name: brewers refer to water as liquor.\n" +
                 "The only thing you use the Hot Liquor Tank (HLT) for is heating up water " +
-                "to use in various points in the brewing process (namely mash & sparge).\n" +
-                "Two vessels systems uses essentially the same process except that the Hot Liquor Tank does not " +
-                "have a heating source per se. The water is heat in the boil kettle, then transferred " +
+                "to use at various points in the brewing process (namely mash & sparge).\n" +
+                "Two vessels systems uses essentially the same process except that the Hot Liquor Tank " +
+                "does not have a heating source per se.\n" +
+                "The water is heat up in the boil kettle, then transferred " +
                 "to the mash tun or a buffer bucket (before sparge)."
 
             tasks = listOf(
@@ -27,7 +28,7 @@ class DefaultProcesses {
                 mash {},
                 heatWater {
                     name = "Heat Sparge Water"
-                    use = HeatWater.For.MASH
+                    use = HeatWater.For.SPARGE
                     heatingPower = 2000
                 },
                 lauter { litersPerMin = 1.0 },

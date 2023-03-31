@@ -68,22 +68,22 @@ internal class TaskTest {
             return Stream.of(
                 arguments(
                     DependencyType.STARTS_AFTER_END,
-                    "delay to start \"dependant_task\"",
+                    "Delay to start \"dependant_task\" after the end of \"main_task\"",
                     "How long after the end of \"main_task\" will you start \"dependant_task\" (in mn)"
                 ),
                 arguments(
                     DependencyType.STARTS_AFTER_START,
-                    "delay to start \"dependant_task\"",
+                    "Delay to start \"dependant_task\" after the beginning of \"main_task\"",
                     "How long after the beginning of \"main_task\" will you start \"dependant_task\" (in mn)"
                 ),
                 arguments(
                     DependencyType.STARTS_BEFORE_END,
-                    "delay to start \"dependant_task\"",
+                    "Delay to start \"dependant_task\" before the end of \"main_task\"",
                     "How long before the end of \"main_task\" will you start \"dependant_task\" (in mn)"
                 ),
                 arguments(
                     DependencyType.FINISH_BEFORE_END,
-                    "delay to finish \"dependant_task\"",
+                    "Delay to finish \"dependant_task\" before the end of \"main_task\"",
                     "How long before the end of \"main_task\" will you finish \"dependant_task\" (in mn)"
                 )
             )

@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import command.prompt.Prompt
+import org.apache.commons.lang3.StringUtils
+import org.apache.commons.text.WordUtils
 import picocli.CommandLine
 import picocli.CommandLine.ExitCode
 import java.io.File
@@ -41,10 +43,14 @@ class ConfigCommand(bdsDirectory: File) : Callable<Int> {
         }
     }
 
+    companion object {
+        const val MAX_OUTPUT_LINE_LENGTH = 80
+    }
+
     @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = ["display help for this command"])
     private var helpRequested: Boolean = false
 
-    @CommandLine.Option(names = ["-l", "--list"], description = ["list the current configuration"])
+    @CommandLine.Option(names = ["-p", "--print"], description = ["print the current configuration"])
     private var listRequested: Boolean = false
 
     @CommandLine.Option(names = ["-s", "--set-up"], description = ["interactively set up a configuration"])
@@ -52,7 +58,7 @@ class ConfigCommand(bdsDirectory: File) : Callable<Int> {
 
     override fun call(): Int {
         if (this.listRequested) {
-            this.listConfig()
+            this.printConfig()
             return ExitCode.OK
         }
 
@@ -167,8 +173,42 @@ class ConfigCommand(bdsDirectory: File) : Callable<Int> {
         )
     }
 
-    fun listConfig() {
-        TODO("Not yet implemented")
+    private fun printConfig() {
+        val outputWidth = ConfigCommand.MAX_OUTPUT_LINE_LENGTH
+        printConfigHeader(outputWidth)
+        println()
+        printProcess(outputWidth)
+        println()
+        printProcessParameters(outputWidth)
+    }
+
+    private fun printProcess(outputWidth: Int) {
+        println("Brewing process: ${AppConfig.process.name}")
+        println(StringUtils.repeat('-', outputWidth))
+
+        AppConfig.process.description
+            ?.split("\n")
+            ?.forEach {
+                println(WordUtils.wrap(it, outputWidth))
+            }
+
+        println(StringUtils.repeat('-', outputWidth))
+    }
+
+    private fun printProcessParameters(outputWidth: Int) {
+        val maxLabelLength = AppConfig.process.getParameters().maxOf { it.name.length }
+
+        for (parameter in AppConfig.process.getParameters()) {
+            val paddedLabel = StringUtils.rightPad(parameter.name, maxLabelLength + 5, '.')
+            val parameterWithUnit = StringUtils.leftPad("${parameter.current} ${parameter.unit}", 10)
+            println("$paddedLabel $parameterWithUnit")
+        }
+    }
+
+    private fun printConfigHeader(outputWidth: Int) {
+        println(StringUtils.repeat('*', outputWidth))
+        println("*" + StringUtils.center("BrewDayScheduler Configuration", outputWidth - 2) + "*")
+        println(StringUtils.repeat('*', outputWidth))
     }
 
     private fun loadConfigFromFile() {
