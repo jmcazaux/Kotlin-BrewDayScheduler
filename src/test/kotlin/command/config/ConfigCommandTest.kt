@@ -2,6 +2,7 @@ package command.config
 
 import BdsApp
 import TestHelper
+import TestHelper.Companion.TEST_BDS_DIRECTORY
 import brewprocess.BrewProcess
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -78,5 +79,38 @@ internal class ConfigCommandTest {
             DefaultProcesses.defaultProcess.name,
             "The configured process should be the default process"
         )
+    }
+
+    @Test
+    fun printConfigShouldPrintDetailsOfTheCurrentConfig() {
+        val configCommand = ConfigCommand(TEST_BDS_DIRECTORY)
+        val app = BdsApp(arrayOf(configCommand))
+
+        // Setting up the configuration
+        // The below is a hack to generate enough "default" user inputs to go through the full config set up.
+        val inputs = Array(100) { "" }
+        SystemLambda.withTextFromSystemIn(*inputs).execute {
+            app.run(args = emptyArray())
+        }
+
+        // Printing the configuration
+        val printedConfiguration = SystemLambda.tapSystemOutNormalized {
+            app.run(args = arrayOf("config", "--print"))
+        }
+
+        // The output...
+        // Should contain the title
+        assert("BrewDayScheduler Configuration" in printedConfiguration)
+
+        // Should contain the name of the brew process
+        assert("Brewing process: ${AppConfig.process.name}" in printedConfiguration)
+
+        // Should contain the description of the brew process
+        assert(AppConfig.process.description.toString() in printedConfiguration)
+
+        // Each parameter should be in the printed configuration
+        AppConfig.process.getParameters().forEach {
+            assert(it.name in printedConfiguration)
+        }
     }
 }
