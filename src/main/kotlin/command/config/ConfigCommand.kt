@@ -51,13 +51,13 @@ class ConfigCommand(bdsDirectory: File) : Callable<Int> {
     private var helpRequested: Boolean = false
 
     @CommandLine.Option(names = ["-p", "--print"], description = ["print the current configuration"])
-    private var listRequested: Boolean = false
+    private var printRequested: Boolean = false
 
     @CommandLine.Option(names = ["-s", "--set-up"], description = ["interactively set up a configuration"])
     private var setUpRequested: Boolean = false
 
     override fun call(): Int {
-        if (this.listRequested) {
+        if (this.printRequested) {
             this.printConfig()
             return ExitCode.OK
         }
