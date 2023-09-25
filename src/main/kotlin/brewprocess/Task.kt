@@ -78,25 +78,25 @@ sealed class Task(val name: String, var order: Int? = null) {
 
         when (dependantTask.type) {
             DependencyType.STARTS_AFTER_START -> {
-                name = "delay to start \"${dependantTask.to.name.lowercase()}\""
+                name = "Delay to start \"${dependantTask.to.name.lowercase()}\" after the beginning of \"${this.name}\""
                 prompt =
                     "How long after the beginning of \"${this.name.lowercase()}\" will you start \"${dependantTask.to.name.lowercase()}\" (in mn)"
             }
 
             DependencyType.STARTS_AFTER_END -> {
-                name = "delay to start \"${dependantTask.to.name.lowercase()}\""
+                name = "Delay to start \"${dependantTask.to.name.lowercase()}\" after the end of \"${this.name}\""
                 prompt =
                     "How long after the end of \"${this.name.lowercase()}\" will you start \"${dependantTask.to.name.lowercase()}\" (in mn)"
             }
 
             DependencyType.STARTS_BEFORE_END -> {
-                name = "delay to start \"${dependantTask.to.name.lowercase()}\""
+                name = "Delay to start \"${dependantTask.to.name.lowercase()}\" before the end of \"${this.name}\""
                 prompt =
                     "How long before the end of \"${this.name.lowercase()}\" will you start \"${dependantTask.to.name.lowercase()}\" (in mn)"
             }
 
             DependencyType.FINISH_BEFORE_END -> {
-                name = "delay to finish \"${dependantTask.to.name.lowercase()}\""
+                name = "Delay to finish \"${dependantTask.to.name.lowercase()}\" before the end of \"${this.name}\""
                 prompt =
                     "How long before the end of \"${this.name.lowercase()}\" will you finish \"${dependantTask.to.name.lowercase()}\" (in mn)"
             }
@@ -129,7 +129,7 @@ class Boil(
     override fun getTaskParameters(): List<ProcessParameter<*>> {
         val parameters: MutableList<ProcessParameter<*>> = mutableListOf(
             ProcessParameter(
-                name = "heating power for boil",
+                name = "Heating power for boil",
                 prompt = "Define the actual heating power available during the boil operation",
                 description = "The actual heating power (in Watts) that is actually transmitted to the wort during boil.\n" +
                     "This is not the power of the heating source as it should account for efficiency.\n" +
@@ -162,12 +162,12 @@ class Lauter(
         val parameters: MutableList<ProcessParameter<*>> = mutableListOf(
             ProcessParameter(
                 type = ProcessParameterType.DOUBLE,
-                name = "lautering throughput",
+                name = "Lautering throughput",
                 prompt = "Define the throughput when lautering",
                 description = "This will allow to calculate the time you need to lauter your mash.\n" +
                     "It will be derived from the water throughput expressed as liters per minute.\n" +
                     "Must be greater than 0 (decimals allowed).",
-                unit = "l / h",
+                unit = "l/h",
                 setter = this::setLitersPerMin,
                 current = this.litersPerMin,
                 min = 0.0
@@ -193,7 +193,7 @@ class DrainMash(
         val parameters: MutableList<ProcessParameter<*>> = mutableListOf(
             ProcessParameter(
                 type = ProcessParameterType.INT,
-                name = "duration of the mash drain",
+                name = "Duration of the mash drain",
                 prompt = "Duration to drain the mash (in minutes)",
                 description = "When using BIAB or other single vessel process, this will define the time you will " +
                     "time it takes to drain the mash before the boil stage.\n" +
@@ -231,7 +231,7 @@ class HeatWater(
     override fun getTaskParameters(): List<ProcessParameter<*>> {
         val parameters: MutableList<ProcessParameter<*>> = mutableListOf(
             ProcessParameter(
-                name = "power when heating water for ${use.name.lowercase()}",
+                name = "Power when heating water for ${use.name.lowercase()}",
                 prompt = "Define the actual heating power available when heating water for ${use.name.lowercase()}",
                 description = "The actual heating power (in Watts) that is actually transmitted to the water when heating (for mash or for sparge).\n" +
                     "This is not the power of the heating source as it should account for efficiency.\n" +
@@ -263,7 +263,7 @@ class Chill(
     override fun getTaskParameters(): List<ProcessParameter<*>> {
         val parameters: MutableList<ProcessParameter<*>> = mutableListOf(
             ProcessParameter(
-                name = "chilling capability",
+                name = "Chilling capability",
                 prompt = "Define the actual chilling capability",
                 description = "The actual chilling capability (in Watts) that is actually available to cool the wort after boil.\n" +
                     "This can be calculated with the method below.\n" +
